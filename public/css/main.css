@@ -1,0 +1,47 @@
+.maincontent {
+    margin-top:60px;
+}
+.resultlist{
+    overflow:auto;
+    height:100vh;
+}
+
+.map {
+    height:100vh;
+    z-index:1
+}
+.star {
+    font-size: x-large;
+    display: inline-block;
+    width: 30px;
+    color: gray;
+}
+.star:last-child {
+    margin-right: 0;
+}
+.yellow {
+  color: #ffbf00;
+}
+.star:before {
+    content:'\2605';
+}
+.star.on {
+    color: #ffbf00;
+}
+.star.half:after {
+    content:'\2605';
+    color: #ffbf00;
+    position: absolute;
+    margin-left: -20px;
+    width: 10px;
+    overflow: hidden;
+}
+
+.center{
+  width: 60%;
+  height: 60%;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+/*# sourceMappingURL=main.css.map*/
