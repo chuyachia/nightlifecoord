@@ -15,7 +15,6 @@ class Results extends React.Component{
         super(props);
         let initialData;
         let loggedIn =false;
-        console.log(this.props);
         if (typeof window !== 'undefined') {
           initialData = window.__initialData__;
           loggedIn = window.__loggedIn__;
@@ -39,11 +38,13 @@ class Results extends React.Component{
      
      getData() {
         var data = ResultsStore.getAll();
+        console.log(data);
+        console.log('Results set new state');
         this.setState({
           data:data
         });
-        console.log('Results set new state');
     }
+
     componentWillMount() {
         ResultsStore.on("change", this.getData.bind(this));
     }
@@ -52,16 +53,21 @@ class Results extends React.Component{
         ResultsStore.removeListener("change", this.getData.bind(this));
     }
     render(){
+        console.log('render');
+        const {businesses,togo,region} = this.state.data;
+        console.log(businesses);
+        console.log(togo);
+        console.log(region);
         return(
         <div>
         <Modal/>
         <Navbar loggedin ={this.state.loggedin}/>
         <div class="row maincontent">
         <div class="col-md-4 resultlist">
-        <Barlist businesses = {this.state.data.businesses} togo={this.state.data.togo}/>
+        <Barlist businesses = {businesses} togo={togo}/>
         </div>
         <div class="col-md-8">
-        <Leafletmap lon= {this.state.data.region.center.longitude} lat= {this.state.data.region.center.latitude} markers = {this.state.data.businesses} />
+        <Leafletmap lon= {region.center.longitude} lat= {region.center.latitude} markers = {businesses} />
         </div>
         </div>
         </div>);

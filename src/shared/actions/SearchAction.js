@@ -9,9 +9,9 @@ function searchActions(){
               type:"NEW_SEARCH",
               data:response.data
           }))
-          .catch(error => dispatcher.dispatch({
+          .catch(error => console.log(error)/*dispatcher.dispatch({
                 type:"SEARCH_ERROR"
-            }));
+            })*/);
     };
     
 }

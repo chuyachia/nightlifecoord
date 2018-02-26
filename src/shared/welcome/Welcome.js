@@ -10,6 +10,8 @@ import "./Welcome.css";
 class Welcome extends React.Component {
     constructor(){
         super();
+        this.getData = this.getData.bind(this);
+        this.throwError = this.throwError.bind(this);
         this.state={term:'',data:{},error:false};
     }
     getData() {
@@ -23,13 +25,13 @@ class Welcome extends React.Component {
       });
     }
     componentWillMount() {
-        WelcomeStore.on("ready", this.getData.bind(this));
-        WelcomeStore.on('searcherror',this.throwError.bind(this));
+        WelcomeStore.on("ready", this.getData);
+        WelcomeStore.on('searcherror',this.throwError);
     }
 
     componentWillUnmount() {
-        WelcomeStore.removeListener("ready", this.getData.bind(this));
-        WelcomeStore.removeListener('searcherror',this.throwError.bind(this));
+        WelcomeStore.removeListener("ready", this.getData);
+        WelcomeStore.removeListener('searcherror',this.throwError);
     }
     render(){
         return(
@@ -41,7 +43,7 @@ class Welcome extends React.Component {
       {this.state.error && <span>Oups, something went wrong. I can't get the search results. Please come back later.</span>}
         {this.state.data.businesses &&
           <Redirect to={{
-            pathname: '/results/'+this.state.term,
+            pathname: '/results',
             state: { 
               businesses: this.state.data.businesses,
               togo:this.state.data.togo,

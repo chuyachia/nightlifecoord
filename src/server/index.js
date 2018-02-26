@@ -80,7 +80,6 @@ app.get("*", (req, res, next) => {
 
   Promise.resolve(requestInitialData)
     .then(initialData => {
-      console.log(initialData);
       const context = { initialData };
       const markup = renderToString(
         <StaticRouter location={req.url} context={context}>

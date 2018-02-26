@@ -7,11 +7,10 @@ class ResultsStore extends EventEmitter {
         super();
         this.businesses = [];
         this.togo=[];
-        this.lat='';
-        this.lon='';
+        this.region={};
     }
     getAll() {
-        return {businesses:this.businesses,togo:this.togo,lat:this.lat,lon:this.lon};
+        return {businesses:this.businesses,togo:this.togo,region:this.region};
     }
     
     handleActions(action) {
@@ -20,8 +19,7 @@ class ResultsStore extends EventEmitter {
             console.log('Results store received data');
             this.businesses = action.data.businesses;
             this.togo= action.data.togo;
-            this.lat = action.data.region.center.latitude;
-            this.lon = action.data.region.center.longitude;
+            this.region = action.data.region;
             this.emit("change");
             break;
           }
