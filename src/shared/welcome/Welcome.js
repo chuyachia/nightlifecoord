@@ -38,7 +38,10 @@ class Welcome extends React.Component {
       <h1>Fancy a drink tonight?</h1>
       <h2>Search for bars in your area and see where everyone else is going</h2>
       <Searchbar/>
-      {this.state.error && <span>Oups, something went wrong. I can't get the search results. Please come back later.</span>}
+    </div>)
+    }
+}
+/*      {this.state.error && <span>Oups, something went wrong. I can't get the search results. Please come back later.</span>}
         {this.state.data.businesses &&
           <Redirect to={{
             pathname: '/results/'+this.state.term,
@@ -48,9 +51,5 @@ class Welcome extends React.Component {
               region: this.state.data.region
             }
           }}/>
-        }
-    </div>)
-    }
-}
-
+        }*/
 export default Welcome;

@@ -3,11 +3,6 @@ import Results from "./results/Results";
 
 
 const routes = [
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   component: Home
-  // },
   {
     path: "/",
     exact:true,

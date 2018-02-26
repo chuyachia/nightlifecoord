@@ -4,13 +4,17 @@ var Users = require('../models/users.js');
 
 function dbHandler(){
   this.getOwnGoing = function(req,res,next) {
+    console.log('dbhandler');
+    console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
+      console.log('dbhandler is loggedin');
       Users.findOne({'github.id':req.user.github.id},{'places':1})
       .exec(function(err,result){
         if (err) throw err;
         res.locals.owngoing = result['places']
         next()
       })} else {
+        console.log('dbhandler is not loggedin');
         res.locals.owngoing=[];
         next();
      }
@@ -32,6 +36,24 @@ function dbHandler(){
       next();
     });
   };
+  
+  this.addPlace = function(req,res){
+    Users.findOneAndUpdate({'github.id':req.user.github.id},{$push:{places:req.params.placeid}},{new:true})
+    .exec(function(err,result){
+        if (err) throw err;
+        console.log('New place added');
+        res.json(result)
+      })
+  }
+  
+  this.deletePlace = function(req,res){
+        Users.findOneAndUpdate({'github.id':req.user.github.id},{$pull:{places:req.params.placeid}},{new:true})
+    .exec(function(err,result){
+        if (err) throw err;
+        console.log('Place removed');
+        res.json(result)
+      })
+  }
 }
 
 export default new dbHandler();

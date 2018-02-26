@@ -9,6 +9,7 @@ import cache from 'memory-cache';
 function searchHandler(){
   
   this.getToken= function(req,res,next) {
+    console.log(req.isAuthenticated());
     if(cache.get('token')) {
       res.locals.token = cache.get('token');
       next();
@@ -48,6 +49,7 @@ function searchHandler(){
 
   
   this.getSearch = function(req,res){
+    console.log(req.isAuthenticated());
     cache.put('lastsearch', req.params.location);  
     var getParams = querystring.stringify({
         location:req.params.location,
@@ -88,6 +90,7 @@ function searchHandler(){
                 });
               responseObject.togo= res.locals.owngoing;
               res.send(responseObject);
+
             }
           else{
             res.redirect('back');

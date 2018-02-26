@@ -9,8 +9,13 @@ class Bar extends React.Component{
         Action.zoom({latitude:this.props.lat, longitude:this.props.lon});
     }
     getReview(){
-
         Action.getReview(this.props.id,this.props.name);
+    }
+    addToGo(){
+        Action.addToGo(this.props.id);
+    }
+    removeToGo(){
+        Action.removeToGo(this.props.id);
     }
     render(){
         return(
@@ -27,8 +32,8 @@ class Bar extends React.Component{
                       <button type="button" class="btn" data-toggle="tooltip" title="Zoom on map" onClick={this.zoom.bind(this)}>Zoom</button>
                       <button type="button" class="btn" data-toggle="tooltip" title="View reviews" onClick={this.getReview.bind(this)}>Reviews</button>
                       {this.props.added?
-                      <button type="button" class="btn" data-toggle="tooltip" title="Remove your presence">Remove</button>:
-                      <button type="button" class="btn" data-toggle="tooltip" title="Indicate your presence">Add</button>}
+                      <button type="button" class="btn" data-toggle="tooltip" title="Remove your presence" onClick={this.removeToGo.bind(this)}>Remove</button>:
+                      <button type="button" class="btn" data-toggle="tooltip" title="Indicate your presence" onClick={this.addToGo.bind(this)}>Add</button>}
                     </div>
                 </div>
                 

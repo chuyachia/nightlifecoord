@@ -25,6 +25,13 @@ class ResultsStore extends EventEmitter {
             this.emit("change");
             break;
           }
+        case "NEW_PLACE": {
+            console.log('Results store received new place');
+            this.togo.push(action.placeid);
+            console.log(this.togo);
+            this.emit("change");
+            break;
+          }
         }
     }
 }

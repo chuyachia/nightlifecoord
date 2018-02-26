@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Barlist from '../components/Barlist.js';
+import Bar from '../components/Bar.js';
+import Searchbar from '../components/Searchbar.js';
 import Leafletmap from '../components/Map.js';
 import Modal from '../components/Modal.js';
 import Navbar from '../components/Navbar.js';
@@ -15,8 +17,7 @@ class Results extends React.Component{
         super(props);
         let initialData;
         let loggedIn =false;
-        console.log(this.props);
-        if (typeof window !== 'undefined') {
+        if (!this.props.staticContext) {
           initialData = window.__initialData__;
           loggedIn = window.__loggedIn__;
           delete window.__initialData__;
@@ -25,51 +26,66 @@ class Results extends React.Component{
             initialData = this.props.staticContext.initialData;
             loggedIn = this.props.staticContext.loggedIn;
         }
-        
         this.state={
-            data:this.props.location.state?this.props.location.state:initialData,
-            loggedin:loggedIn
+            businesses:initialData?initialData.businesses:[],
+            togo:initialData?initialData.togo:[],
+            lon:initialData?initialData.region.center.longitude: -0.09,
+            lat:initialData?initialData.region.center.latitude:51.505,
+            loggedin:loggedIn,
+            term:this.props.location?this.props.location.term:''
         };
     }
      static requestInitialData(term){
-      return  fetch(process.env.APP_URL+'search/'+term)
-          .then(response => response.json())
-          .catch(error => console.log(error));
+      return  fetch('https://react-ssr-2-ccyqc.c9users.io/'+'search/'+term)
+      .then(response => response.json())
+      .catch(error => console.log(error));
     }
-     
-     getData() {
-        var data = ResultsStore.getAll();
-        this.setState({
-          data:data
-        });
-        console.log('Results set new state');
-    }
-    componentWillMount() {
-        ResultsStore.on("change", this.getData.bind(this));
+    
+    componentDidMount() {
+        //called only on the browser
+        if (this.state.businesses.length==0) {
+            console.log('fetch data from browser');
+          Results.requestInitialData(this.state.term).then(data =>
+          this.setState(
+              { businesses: data.businesses,
+                togo: data.togo,
+                lon:data.region.center.longitude,
+                lat:data.region.center.latitude,
+              }
+            )
+            );
+        }
     }
 
-    componentWillUnmount() {
-        ResultsStore.removeListener("change", this.getData.bind(this));
-    }
+
     render(){
+        const { businesses,togo,lon,lat, loggedin,term } = this.state;
         return(
         <div>
         <Modal/>
-        <Navbar loggedin ={this.state.loggedin}/>
+        <Navbar loggedin ={loggedin}/>
         <div class="row maincontent">
         <div class="col-md-4 resultlist">
-        <Barlist businesses = {this.state.data.businesses} togo={this.state.data.togo}/>
+        <div>
+        <Searchbar/>
+            {businesses.map(function(bar,indx){
+                return <Bar key = {indx} id ={bar.id} image_url={bar.image_url} name={bar.name} price={bar.price} categories={bar.categories}
+                going={bar.going} rating={bar.rating} review_count = {bar.review_count}
+                added= {togo.indexOf(bar.id) == -1?false:true} lat={bar.coordinates.latitude} lon={bar.coordinates.longitude}/>;
+            })}
+            </div>
         </div>
         <div class="col-md-8">
-        <Leafletmap lon= {this.state.data.region.center.longitude} lat= {this.state.data.region.center.latitude} markers = {this.state.data.businesses} />
+        <Leafletmap lon= {lon} lat= {lat} markers = {businesses} />
         </div>
         </div>
-        </div>);
+        </div>)
     }
 }
 
 /*        
          
+        <Barlist businesses = {this.state.data.businesses} togo={this.state.data.togo}/>
 
        
 */

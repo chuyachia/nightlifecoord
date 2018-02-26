@@ -36,12 +36,14 @@ db.once('open', function() {
   console.log('connected to db');
 });
 // Passport
-require('./config/passport.js')(passport);
 app.use(session({
 	secret: 'secretNightlife',
-	resave: false,
+	resave: true,
 	saveUninitialized: true
 }));
+
+
+require('./config/passport.js')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -64,10 +66,24 @@ app.route('/logout')
 
 
 // APP content
+function isLoggedIn (req, res, next) {
+	if (req.isAuthenticated()) {
+	  console.log('isloggedin');
+		return next();
+	} else {
+	  console.log('notloggedin');
+		res.redirect('/results');
+	}
+};
+
 app.route('/search/:location')
     .get(searchHandler.getToken,dbHandler.getOwnGoing,dbHandler.getAllGoing,searchHandler.getSearch);
 app.route('/review/:placeid')
     .get(searchHandler.getToken,searchHandler.getReview);
+app.route('/place/:placeid')
+    .post(isLoggedIn,dbHandler.addPlace)
+    .delete(isLoggedIn,dbHandler.deletePlace)
+
 
 
 // React components
@@ -80,7 +96,6 @@ app.get("*", (req, res, next) => {
 
   Promise.resolve(requestInitialData)
     .then(initialData => {
-      console.log(initialData);
       const context = { initialData };
       const markup = renderToString(
         <StaticRouter location={req.url} context={context}>
@@ -102,7 +117,7 @@ app.get("*", (req, res, next) => {
           <script>window.__loggedIn__ = ${serialize(loggedin)}</script>
         </head>
         <body>
-          <div id="root">${markup}</div>
+          <div id="root" class="container-fluid">${markup}</div>
         </body>
       </html>
       `);

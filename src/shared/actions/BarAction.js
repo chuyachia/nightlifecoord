@@ -3,10 +3,17 @@ import axios from 'axios';
 
 function barActions(){
     this.addToGo = function(id){
-        axios.post('/place/'+id);
+        axios.post('/place/'+id)
+        .then(response=>dispatcher.dispatch({
+                type:"NEW_PLACE",
+                placeid:id
+            }))
+        .catch(error => console.log(error));
     };
     this.removeToGo = function(id){
-        axios.delete('/place/'+id);
+        axios.delete('/place/'+id)
+        .then(response=>console.log(response))
+        .catch(error => console.log(error));
     };
     this.zoom= function(coord){
        dispatcher.dispatch({
