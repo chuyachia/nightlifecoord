@@ -1,6 +1,8 @@
+
 'use strict';
 
-const GitHubStrategy = require('passport-github').Strategy;
+const GitHubStrategy = require('passport-github').Strategy,
+      configAuth = require('./auth.js');
 
 var Users = require("../models/users.js");
 
@@ -16,9 +18,9 @@ module.exports = function(passport){
     });
   
 	passport.use(new GitHubStrategy({
-      clientID: process.env.GITHUB_KEY,
-      clientSecret:  process.env.GITHUB_SECRET,
-      callbackURL:process.env.APP_URL + 'auth/github/callback'
+      clientID: configAuth.githubAuth.clientID,
+      clientSecret: configAuth.githubAuth.clientSecret,
+      callbackURL: configAuth.githubAuth.callbackURL
 	  },function (token, refreshToken, profile, done) {
         process.nextTick(function (){
         Users.findOne({'github.id': profile.id},function(err,user){

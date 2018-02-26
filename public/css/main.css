@@ -1,13 +1,24 @@
+.titlebar {
+    position:fixed;
+    top:0;
+    z-index:5;
+}
+.apptitle {
+    font-size:150%;
+}
+.logbtn {
+    float:right;
+}
 .maincontent {
     margin-top:60px;
 }
 .resultlist{
     overflow:auto;
-    height:100vh;
+    height:90vh;
 }
 
 .map {
-    height:100vh;
+    height:90vh;
     z-index:1
 }
 .star {

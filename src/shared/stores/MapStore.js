@@ -8,7 +8,6 @@ class MapStore extends EventEmitter {
         this.zoom={};
     }
     getZoom(){
-        console.log(this.zoom);
         return this.zoom;
     }
     

@@ -6,7 +6,6 @@ import Leafletmap from '../components/Map.js';
 import Modal from '../components/Modal.js';
 import Navbar from '../components/Navbar.js';
 import ResultsStore from '../stores/ResultsStore.js';
-import "isomorphic-fetch";
 import "./Results.css";
 
 
@@ -14,7 +13,7 @@ class Results extends React.Component{
     constructor(props){
         super(props);
         let initialData;
-        let loggedIn =false;
+        let loggedIn;
         if (typeof window !== 'undefined') {
           initialData = window.__initialData__;
           loggedIn = window.__loggedIn__;
@@ -24,59 +23,52 @@ class Results extends React.Component{
             initialData = this.props.staticContext.initialData;
             loggedIn = this.props.staticContext.loggedIn;
         }
-        
         this.state={
-            data:this.props.location.state?this.props.location.state:initialData,
+            businesses:this.props.location.state?this.props.location.state.businesses:initialData.businesses,
+            togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
+            region:this.props.location.state?this.props.location.state.region:initialData.region,
             loggedin:loggedIn
         };
     }
-     static requestInitialData(term){
-      return  fetch(process.env.APP_URL+'search/'+term)
-          .then(response => response.json())
-          .catch(error => console.log(error));
-    }
-     
      getData() {
         var data = ResultsStore.getAll();
-        console.log(data);
-        console.log('Results set new state');
         this.setState({
-          data:data
+          businesses:data.businesses,
+          togo :data.togo,
+          region:data.region
         });
     }
-
+    getToGo(){
+        var data = ResultsStore.getToGo();
+        this.setState({
+          togo :data
+        });
+    }
     componentWillMount() {
-        ResultsStore.on("change", this.getData.bind(this));
+        ResultsStore.on("newdata", this.getData.bind(this));
+        ResultsStore.on("newplace", this.getToGo.bind(this));
     }
 
     componentWillUnmount() {
-        ResultsStore.removeListener("change", this.getData.bind(this));
+        ResultsStore.removeListener("newdata", this.getData.bind(this));
+        ResultsStore.removeListener("newplace", this.getToGo.bind(this));
     }
     render(){
-        console.log('render');
-        const {businesses,togo,region} = this.state.data;
-        console.log(businesses);
-        console.log(togo);
-        console.log(region);
         return(
-        <div>
+        <div class='container-fluid'>
         <Modal/>
-        <Navbar loggedin ={this.state.loggedin}/>
         <div class="row maincontent">
+        <Navbar loggedin ={this.state.loggedin}/>
         <div class="col-md-4 resultlist">
-        <Barlist businesses = {businesses} togo={togo}/>
+        <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo}/>
         </div>
         <div class="col-md-8">
-        <Leafletmap lon= {region.center.longitude} lat= {region.center.latitude} markers = {businesses} />
+        <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
         </div>
         </div>
         </div>);
     }
 }
 
-/*        
-         
 
-       
-*/
 export default Results;

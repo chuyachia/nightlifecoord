@@ -4,10 +4,10 @@ import React from 'react';
 
 class Navbar extends React.Component{
     render(){
-        return(<div style={{position:"fixed",top:"0",width:"100%",zIndex:5}}>
-        <h1>Nightlife Coordination App</h1>
-        {this.props.loggedin?<a href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
-            <a href="/auth/github"><i class="fas fa-sign-in-alt"/>Log In</a>
+        return(<div class='titlebar col-md-12'>
+        <span class='apptitle'>Nightlife Coordination App</span>
+        {this.props.loggedin?<a class='logbtn' href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
+            <a class='logbtn' href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
         }
         </div>
         );

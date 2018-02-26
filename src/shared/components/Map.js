@@ -3,7 +3,7 @@
 import React from 'react';
 import MapStore from '../stores/MapStore.js';
 
-let Map, TileLayer, Marker,Popup;
+let Map, TileLayer, Marker,Popup,Tooltip;
 
 class Leafletmap extends React.Component{
     constructor(props){
@@ -14,6 +14,9 @@ class Leafletmap extends React.Component{
       var coord= MapStore.getZoom();
       this.mapInstance.leafletElement.flyTo([coord.latitude,coord.longitude], 18);
     }
+    handleClick(e){
+      console.log(e);
+    }
     componentWillMount() {
         MapStore.on("zoom",this.flyTo.bind(this));
     }
@@ -23,6 +26,7 @@ class Leafletmap extends React.Component{
         TileLayer = require('react-leaflet').TileLayer;
         Marker = require('react-leaflet').Marker;
         Popup = require('react-leaflet').Popup;
+        Tooltip = require('react-leaflet').Tooltip;
         this.setState({packageloaded:true});
     }
     componentWillUnmount() {
@@ -32,16 +36,18 @@ class Leafletmap extends React.Component{
     return (
       (Map)
       ? (
-        <Map center={[this.props.lat,this.props.lon]} zoom={15} class="map" ref={e => { this.mapInstance = e }}
-        useFlyTo={true}
+        <Map center={[this.props.lat,this.props.lon]} zoom={13} class="map" ref={e => { this.mapInstance = e }}
+        useFlyTo={true} 
         >
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-          {this.props.markers.map(function(marker,indx){
-            return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} sytle={{zIndex:5}}>
+          {this.props.markers.map((marker,indx) => {
+            return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
+            onClick={this.handleClick} sytle={{zIndex:5}}>
             <Popup><span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
             {marker.phone}</span></Popup>
+            <Tooltip><span>{marker.name}</span></Tooltip>
             </Marker>;
           })}
         </Map>

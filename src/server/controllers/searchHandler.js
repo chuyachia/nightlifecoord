@@ -47,7 +47,7 @@ function searchHandler(){
   };
 
   
-  this.getSearch = function(req,res){
+  this.getSearch = function(req,res,next){
     cache.put('lastsearch', req.params.location);  
     var getParams = querystring.stringify({
         location:req.params.location,
@@ -87,7 +87,8 @@ function searchHandler(){
                 }
                 });
               responseObject.togo= res.locals.owngoing;
-              res.send(responseObject);
+              res.locals.response = responseObject;
+              next();
             }
           else{
             res.redirect('back');

@@ -32,6 +32,24 @@ function dbHandler(){
       next();
     });
   };
+  
+  this.addPlace = function(req,res){
+    Users.findOneAndUpdate({'github.id':req.user.github.id},{$push:{places:req.params.placeid}},{new:true})
+    .exec(function(err,result){
+        if (err) throw err;
+        console.log('New place added');
+        res.json(result)
+      })
+  };
+  
+  this.deletePlace = function(req,res){
+        Users.findOneAndUpdate({'github.id':req.user.github.id},{$pull:{places:req.params.placeid}},{new:true})
+    .exec(function(err,result){
+        if (err) throw err;
+        console.log('Place removed');
+        res.json(result)
+      })
+  };
 }
 
 export default new dbHandler();

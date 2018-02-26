@@ -12,7 +12,9 @@ class ResultsStore extends EventEmitter {
     getAll() {
         return {businesses:this.businesses,togo:this.togo,region:this.region};
     }
-    
+    getToGo(){
+        return this.togo;
+    }
     handleActions(action) {
         switch(action.type) {
         case "NEW_SEARCH": {
@@ -20,7 +22,19 @@ class ResultsStore extends EventEmitter {
             this.businesses = action.data.businesses;
             this.togo= action.data.togo;
             this.region = action.data.region;
-            this.emit("change");
+            this.emit("newdata");
+            break;
+          }
+          case "ADD_PLACE": {
+            console.log('Results store received new places')
+            this.togo= action.togo;
+            this.emit("newplace");
+            break;
+          }
+        case "REMOVE_PLACE": {
+            console.log('Results store remove places')
+            this.togo= action.togo;
+            this.emit("newplace");
             break;
           }
         }
