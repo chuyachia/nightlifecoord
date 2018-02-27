@@ -13,6 +13,8 @@ class Searchbar extends React.Component{
     }
     submitSearch(event){
         event.preventDefault();
+        if (this.props.collapse)
+        this.props.collapse();
         Action.getSearchResults(this.state.term);
     }
     
@@ -20,9 +22,10 @@ class Searchbar extends React.Component{
         return(
       <form class={this.props.nav?"navbar-form navbar-left":""} onSubmit={this.submitSearch.bind(this)}>
         <div class="input-group">
-          <input onChange={this.addSearchTerm.bind(this)} type="search" class="form-control" placeholder="Enter a city" required/>
+          <input onChange={this.addSearchTerm.bind(this)} type="search" class="form-control" 
+          placeholder="Enter a city" required/>
           <span class="input-group-btn">
-            <button type="submit" class="btn">
+            <button type="submit" class="btn btn-primary">
               Start
             </button> 
           </span>

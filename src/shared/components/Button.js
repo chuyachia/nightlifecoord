@@ -9,7 +9,7 @@ class Button extends React.Component{
     render(){
         return(                    
          <div class="btn-group">
-          <button type="button" class="btn" data-toggle="tooltip" disabled= {this.props.disabled} title={this.props.title} onClick={this.props.func}>{this.props.text}</button>
+          <button type="button" class="btn btn-success" data-toggle="tooltip" disabled= {this.props.disabled} title={this.props.title} onClick={this.props.func}>{this.props.text}</button>
          </div>
          );
     }

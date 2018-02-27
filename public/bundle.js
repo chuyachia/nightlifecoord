@@ -23236,6 +23236,7 @@ var Searchbar = function (_React$Component) {
         key: 'submitSearch',
         value: function submitSearch(event) {
             event.preventDefault();
+            if (this.props.collapse) this.props.collapse();
             __WEBPACK_IMPORTED_MODULE_1__actions_SearchAction_js__["a" /* default */].getSearchResults(this.state.term);
         }
     }, {
@@ -23245,7 +23246,7 @@ var Searchbar = function (_React$Component) {
                 'form',
                 { className: this.props.nav ? "navbar-form navbar-left" : "", onSubmit: this.submitSearch.bind(this), __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 21
+                        lineNumber: 23
                     },
                     __self: this
                 },
@@ -23253,13 +23254,14 @@ var Searchbar = function (_React$Component) {
                     'div',
                     { className: 'input-group', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 22
+                            lineNumber: 24
                         },
                         __self: this
                     },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { onChange: this.addSearchTerm.bind(this), type: 'search', className: 'form-control', placeholder: 'Enter a city', required: true, __source: {
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { onChange: this.addSearchTerm.bind(this), type: 'search', className: 'form-control',
+                        placeholder: 'Enter a city', required: true, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 23
+                            lineNumber: 25
                         },
                         __self: this
                     }),
@@ -23267,15 +23269,15 @@ var Searchbar = function (_React$Component) {
                         'span',
                         { className: 'input-group-btn', __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 24
+                                lineNumber: 27
                             },
                             __self: this
                         },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'button',
-                            { type: 'submit', className: 'btn', __source: {
+                            { type: 'submit', className: 'btn btn-primary', __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 25
+                                    lineNumber: 28
                                 },
                                 __self: this
                             },
@@ -45224,7 +45226,7 @@ var Welcome = function (_React$Component) {
           },
           'Search for bars in your area and see where everyone else is going'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Searchbar_js__["a" /* default */], { nav: false, __source: {
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Searchbar_js__["a" /* default */], { nav: false, collapse: null, __source: {
             fileName: _jsxFileName,
             lineNumber: 42
           },
@@ -47106,7 +47108,7 @@ var Results = function (_React$Component) {
                     }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-4 resultlist', __source: {
+                        { className: 'col-md-3 resultlist', __source: {
                                 fileName: _jsxFileName,
                                 lineNumber: 62
                             },
@@ -47121,7 +47123,7 @@ var Results = function (_React$Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'col-md-8', __source: {
+                        { className: 'col-md-9', __source: {
                                 fileName: _jsxFileName,
                                 lineNumber: 65
                             },
@@ -47292,7 +47294,7 @@ var Bar = function (_React$Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { id: this.props.id, __source: {
+                { id: this.props.id, className: 'result', __source: {
                         fileName: _jsxFileName,
                         lineNumber: 43
                     },
@@ -47531,7 +47533,7 @@ var Button = function (_React$Component) {
                 },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'button',
-                    { type: 'button', className: 'btn', 'data-toggle': 'tooltip', disabled: this.props.disabled, title: this.props.title, onClick: this.props.func, __source: {
+                    { type: 'button', className: 'btn btn-success', 'data-toggle': 'tooltip', disabled: this.props.disabled, title: this.props.title, onClick: this.props.func, __source: {
                             fileName: _jsxFileName,
                             lineNumber: 12
                         },
@@ -55162,69 +55164,115 @@ var Navbar = function (_React$Component) {
               __self: this
             },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'button',
+              { type: 'button', className: 'navbar-toggle collapsed', onClick: this.toggleCollapse.bind(this), __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 30
+                },
+                __self: this
+              },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'span',
+                { className: 'sr-only', __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 31
+                  },
+                  __self: this
+                },
+                'Toggle navigation'
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-bar', __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 32
+                },
+                __self: this
+              }),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-bar', __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 33
+                },
+                __self: this
+              }),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-bar', __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 34
+                },
+                __self: this
+              })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
               { className: 'navbar-brand', to: '/', __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 30
+                  lineNumber: 36
                 },
                 __self: this
               },
               'Nightlife Coordination App'
             )
           ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Searchbar__["a" /* default */], { nav: true, __source: {
-              fileName: _jsxFileName,
-              lineNumber: 32
-            },
-            __self: this
-          }),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'ul',
-            { className: 'nav navbar-nav navbar-right', __source: {
+            'div',
+            { className: "navbar-collapse " + navClass, id: 'navbarColor01', __source: {
                 fileName: _jsxFileName,
-                lineNumber: 33
+                lineNumber: 38
               },
               __self: this
             },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Searchbar__["a" /* default */], { nav: true, collapse: this.collapse.bind(this), __source: {
+                fileName: _jsxFileName,
+                lineNumber: 39
+              },
+              __self: this
+            }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'li',
-              {
-                __source: {
+              'ul',
+              { className: 'nav navbar-nav navbar-right', __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 34
+                  lineNumber: 40
                 },
                 __self: this
               },
-              this.props.loggedin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'a',
-                { className: 'logbtn', href: '/logout', __source: {
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'li',
+                {
+                  __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 34
+                    lineNumber: 41
                   },
                   __self: this
                 },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-in-alt', __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 34
+                this.props.loggedin ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'a',
+                  { className: 'logbtn', onClick: this.collapse.bind(this), href: '/logout', __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 41
+                    },
+                    __self: this
                   },
-                  __self: this
-                }),
-                'Log Out'
-              ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'a',
-                { className: 'logbtn', href: '/auth/github', __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 35
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-in-alt', __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 41
+                    },
+                    __self: this
+                  }),
+                  'Log Out'
+                ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  'a',
+                  { className: 'logbtn', onClick: this.collapse.bind(this), href: '/auth/github', __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 42
+                    },
+                    __self: this
                   },
-                  __self: this
-                },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-out-alt', __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 35
-                  },
-                  __self: this
-                }),
-                'Log In'
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-out-alt', __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 42
+                    },
+                    __self: this
+                  }),
+                  'Log In'
+                )
               )
             )
           )

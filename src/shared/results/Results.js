@@ -59,10 +59,10 @@ class Results extends React.Component{
         <Modal/>
         <div class="row">
         <Navbar loggedin ={this.state.loggedin}/>
-        <div class="col-md-4 resultlist">
+        <div class="col-md-3 resultlist">
         <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo}/>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
         <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
         </div>
         </div>

@@ -3,7 +3,10 @@
     overflow:auto;
     height:85vh;
 }
-
+.result{
+ margin-top:20px;
+ margin-bottom:20px;  
+}
 .map {
     height:85vh;
     z-index:1

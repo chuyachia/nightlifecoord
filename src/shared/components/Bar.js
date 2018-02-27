@@ -40,7 +40,7 @@ class Bar extends React.Component{
     }
     render(){
         return(
-            <div id = {this.props.id}>
+            <div id = {this.props.id} class='result'>
             {
                 this.props.image_url &&<img src= {this.props.image_url} width="150"/>
             }
