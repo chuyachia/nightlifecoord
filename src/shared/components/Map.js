@@ -2,6 +2,7 @@
 
 import React from 'react';
 import MapStore from '../stores/MapStore.js';
+import Action from '../actions/BarAction.js';
 
 let Map, TileLayer, Marker,Popup,Tooltip;
 
@@ -14,9 +15,8 @@ class Leafletmap extends React.Component{
       var coord= MapStore.getZoom();
       this.mapInstance.leafletElement.flyTo([coord.latitude,coord.longitude], 18);
     }
-    handleClick(id){
-      console.log(id);
-      console.log('clicked');
+    focusOnList(id){
+      window.location.hash = '#'+id;
     }
     componentWillMount() {
         MapStore.on("zoom",this.flyTo.bind(this));
@@ -45,9 +45,9 @@ class Leafletmap extends React.Component{
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           {this.props.markers.map((marker,indx) => {
             return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
-            sytle={{zIndex:5}}>
+            sytle={{zIndex:5}} onClick={() => this.focusOnList(marker.id)}>
             <Popup><span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
-            {marker.phone}<br/><a onClick={this.handleClick}>Reviews</a></span></Popup>
+            {marker.phone}</span></Popup>
             <Tooltip><span>{marker.name}</span></Tooltip>
             </Marker>;
           })}

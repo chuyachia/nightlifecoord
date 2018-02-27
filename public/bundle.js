@@ -46936,12 +46936,16 @@ module.exports = self.fetch.bind(self);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Barlist_js__ = __webpack_require__(358);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Map_js__ = __webpack_require__(362);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Modal_js__ = __webpack_require__(500);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Navbar_js__ = __webpack_require__(509);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__ = __webpack_require__(510);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Results_css__ = __webpack_require__(511);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Results_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__Results_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Bar_js__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Searchbar_js__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Map_js__ = __webpack_require__(362);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Modal_js__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_Navbar_js__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__stores_ResultsStore_js__ = __webpack_require__(510);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_isomorphic_fetch__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_isomorphic_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_isomorphic_fetch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Results_css__ = __webpack_require__(511);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Results_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__Results_css__);
 
 
 var _jsxFileName = '/home/ubuntu/workspace/src/shared/results/Results.js';
@@ -46962,6 +46966,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+
+
 var Results = function (_React$Component) {
     _inherits(Results, _React$Component);
 
@@ -46971,8 +46978,8 @@ var Results = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).call(this, props));
 
         var initialData = void 0;
-        var loggedIn = void 0;
-        if (typeof window !== 'undefined') {
+        var loggedIn = false;
+        if (!_this.props.staticContext) {
             initialData = window.__initialData__;
             loggedIn = window.__loggedIn__;
             delete window.__initialData__;
@@ -46982,59 +46989,63 @@ var Results = function (_React$Component) {
             loggedIn = _this.props.staticContext.loggedIn;
         }
         _this.state = {
-            businesses: _this.props.location.state ? _this.props.location.state.businesses : initialData.businesses,
-            togo: _this.props.location.state ? _this.props.location.state.togo : initialData.togo,
-            region: _this.props.location.state ? _this.props.location.state.region : initialData.region,
-            loggedin: loggedIn
+            businesses: initialData ? initialData.businesses : [],
+            togo: initialData ? initialData.togo : [],
+            lon: initialData ? initialData.region.center.longitude : -0.09,
+            lat: initialData ? initialData.region.center.latitude : 51.505,
+            loggedin: loggedIn,
+            term: _this.props.location ? _this.props.location.term : ''
         };
         return _this;
     }
 
     _createClass(Results, [{
-        key: 'getData',
-        value: function getData() {
-            var data = __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].getAll();
-            this.setState({
-                businesses: data.businesses,
-                togo: data.togo,
-                region: data.region
-            });
-        }
-    }, {
-        key: 'getToGo',
-        value: function getToGo() {
-            var data = __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].getToGo();
-            this.setState({
-                togo: data
-            });
-        }
-    }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].on("newdata", this.getData.bind(this));
-            __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].on("newplace", this.getToGo.bind(this));
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].removeListener("newdata", this.getData.bind(this));
-            __WEBPACK_IMPORTED_MODULE_5__stores_ResultsStore_js__["a" /* default */].removeListener("newplace", this.getToGo.bind(this));
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            //called only on the browser
+            if (this.state.businesses.length == 0) {
+                console.log('fetch data from browser');
+                Results.requestInitialData(this.state.term).then(function (data) {
+                    return _this2.setState({ businesses: data.businesses,
+                        togo: data.togo,
+                        lon: data.region.center.longitude,
+                        lat: data.region.center.latitude
+                    });
+                });
+            }
         }
     }, {
         key: 'render',
         value: function render() {
+            var _state = this.state,
+                businesses = _state.businesses,
+                togo = _state.togo,
+                lon = _state.lon,
+                lat = _state.lat,
+                loggedin = _state.loggedin,
+                term = _state.term;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
-                { className: 'container-fluid', __source: {
-                        fileName: _jsxFileName,
-                        lineNumber: 58
-                    },
-                    __self: this
-                },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Modal_js__["a" /* default */], {
+                {
                     __source: {
                         fileName: _jsxFileName,
                         lineNumber: 59
+                    },
+                    __self: this
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Modal_js__["a" /* default */], {
+                    __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 60
+                    },
+                    __self: this
+                }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_Navbar_js__["a" /* default */], { loggedin: loggedin, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 61
                     },
                     __self: this
                 }),
@@ -47042,42 +47053,57 @@ var Results = function (_React$Component) {
                     'div',
                     { className: 'row maincontent', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 60
+                            lineNumber: 62
                         },
                         __self: this
                     },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Navbar_js__["a" /* default */], { loggedin: this.state.loggedin, __source: {
-                            fileName: _jsxFileName,
-                            lineNumber: 61
-                        },
-                        __self: this
-                    }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col-md-4 resultlist', __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 62
-                            },
-                            __self: this
-                        },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__components_Barlist_js__["a" /* default */], { businesses: this.state.businesses, loggedin: this.state.loggedin, togo: this.state.togo, __source: {
-                                fileName: _jsxFileName,
                                 lineNumber: 63
                             },
                             __self: this
-                        })
+                        },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            {
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 64
+                                },
+                                __self: this
+                            },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Searchbar_js__["a" /* default */], {
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 65
+                                },
+                                __self: this
+                            }),
+                            businesses.map(function (bar, indx) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Bar_js__["a" /* default */], { key: indx, id: bar.id, image_url: bar.image_url, name: bar.name, price: bar.price, categories: bar.categories,
+                                    going: bar.going, rating: bar.rating, review_count: bar.review_count,
+                                    added: togo.indexOf(bar.id) == -1 ? false : true, lat: bar.coordinates.latitude, lon: bar.coordinates.longitude, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 67
+                                    },
+                                    __self: this
+                                });
+                            })
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'col-md-8', __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 65
+                                lineNumber: 73
                             },
                             __self: this
                         },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Map_js__["a" /* default */], { lon: this.state.region.center.longitude, lat: this.state.region.center.latitude, markers: this.state.businesses, __source: {
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Map_js__["a" /* default */], { lon: lon, lat: lat, markers: businesses, __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 66
+                                lineNumber: 74
                             },
                             __self: this
                         })
@@ -47089,6 +47115,14 @@ var Results = function (_React$Component) {
 
     return Results;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/*        
+         
+        <Barlist businesses = {this.state.data.businesses} togo={this.state.data.togo}/>
+
+       
+*/
+
 
 /* harmony default export */ __webpack_exports__["a"] = (Results);
 
@@ -47165,7 +47199,7 @@ var Barlist = function (_React$Component) {
     return Barlist;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
-/* harmony default export */ __webpack_exports__["a"] = (Barlist);
+/* unused harmony default export */ var _unused_webpack_default_export = (Barlist);
 
 /***/ }),
 /* 359 */
@@ -47176,6 +47210,7 @@ var Barlist = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_BarAction_js__ = __webpack_require__(360);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Star_js__ = __webpack_require__(361);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Button_js__ = __webpack_require__(513);
 
 
 var _jsxFileName = '/home/ubuntu/workspace/src/shared/components/Bar.js';
@@ -47187,6 +47222,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -47247,13 +47283,13 @@ var Bar = function (_React$Component) {
                 'div',
                 { id: this.props.id, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 42
+                        lineNumber: 43
                     },
                     __self: this
                 },
                 this.props.image_url && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: this.props.image_url, width: '150', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 44
+                        lineNumber: 45
                     },
                     __self: this
                 }),
@@ -47261,7 +47297,7 @@ var Bar = function (_React$Component) {
                     'div',
                     { className: 'caption', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 46
+                            lineNumber: 47
                         },
                         __self: this
                     },
@@ -47270,7 +47306,7 @@ var Bar = function (_React$Component) {
                         {
                             __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 47
+                                lineNumber: 48
                             },
                             __self: this
                         },
@@ -47281,7 +47317,7 @@ var Bar = function (_React$Component) {
                         {
                             __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 48
+                                lineNumber: 49
                             },
                             __self: this
                         },
@@ -47294,7 +47330,7 @@ var Bar = function (_React$Component) {
                         {
                             __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 49
+                                lineNumber: 50
                             },
                             __self: this
                         },
@@ -47304,7 +47340,7 @@ var Bar = function (_React$Component) {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Star_js__["a" /* default */], { rating: this.props.rating, review_count: this.props.review_count, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 50
+                            lineNumber: 51
                         },
                         __self: this
                     }),
@@ -47312,85 +47348,33 @@ var Bar = function (_React$Component) {
                         'div',
                         { className: 'btn-group btn-group-justified', role: 'group', __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 51
+                                lineNumber: 52
                             },
                             __self: this
                         },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'btn-group', __source: {
-                                    fileName: _jsxFileName,
-                                    lineNumber: 52
-                                },
-                                __self: this
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Button_js__["a" /* default */], { title: 'Zoom on map', func: this.zoom.bind(this), text: 'Zoom', disabled: false, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 53
                             },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'button',
-                                { type: 'button', className: 'btn', 'data-toggle': 'tooltip', title: 'Zoom on map', onClick: this.zoom.bind(this), __source: {
-                                        fileName: _jsxFileName,
-                                        lineNumber: 53
-                                    },
-                                    __self: this
-                                },
-                                'Zoom'
-                            )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'btn-group', __source: {
-                                    fileName: _jsxFileName,
-                                    lineNumber: 55
-                                },
-                                __self: this
+                            __self: this
+                        }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Button_js__["a" /* default */], { title: 'View reviews', func: this.getReview.bind(this), text: 'Reviews', disabled: false, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 54
                             },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'button',
-                                { type: 'button', className: 'btn', 'data-toggle': 'tooltip', title: 'View reviews', onClick: this.getReview.bind(this), __source: {
-                                        fileName: _jsxFileName,
-                                        lineNumber: 56
-                                    },
-                                    __self: this
-                                },
-                                'Reviews'
-                            )
-                        ),
-                        !this.props.loggedin ? null : this.props.added ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'btn-group', __source: {
-                                    fileName: _jsxFileName,
-                                    lineNumber: 61
-                                },
-                                __self: this
+                            __self: this
+                        }),
+                        !this.props.loggedin ? null : this.props.added ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Button_js__["a" /* default */], { title: 'Remove your presence', func: this.removeToGo.bind(this), text: 'Remove', disabled: !this.state.removeclickable, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 58
                             },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'button',
-                                { disabled: !this.state.removeclickable, type: 'button', className: 'btn', 'data-toggle': 'tooltip', title: 'Remove your presence', onClick: this.removeToGo.bind(this), __source: {
-                                        fileName: _jsxFileName,
-                                        lineNumber: 61
-                                    },
-                                    __self: this
-                                },
-                                'Remove'
-                            )
-                        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'btn-group', __source: {
-                                    fileName: _jsxFileName,
-                                    lineNumber: 62
-                                },
-                                __self: this
+                            __self: this
+                        }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Button_js__["a" /* default */], { title: 'Indicate your presence', func: this.addToGo.bind(this), text: 'Add', disabled: !this.state.addclickable, __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 59
                             },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'button',
-                                { disabled: !this.state.addclickable, type: 'button', className: 'btn', 'data-toggle': 'tooltip', title: 'Indicate your presence', onClick: this.addToGo.bind(this), __source: {
-                                        fileName: _jsxFileName,
-                                        lineNumber: 62
-                                    },
-                                    __self: this
-                                },
-                                'Add'
-                            )
-                        )
+                            __self: this
+                        })
                     )
                 )
             );
@@ -47554,6 +47538,7 @@ var Star = function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_MapStore_js__ = __webpack_require__(363);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_BarAction_js__ = __webpack_require__(360);
 
 
 var _jsxFileName = '/home/ubuntu/workspace/src/shared/components/Map.js';
@@ -47565,6 +47550,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -47594,10 +47580,9 @@ var Leafletmap = function (_React$Component) {
       this.mapInstance.leafletElement.flyTo([coord.latitude, coord.longitude], 18);
     }
   }, {
-    key: 'handleClick',
-    value: function handleClick(id) {
-      console.log(id);
-      console.log('clicked');
+    key: 'focusOnList',
+    value: function focusOnList(id) {
+      window.location.hash = '#' + id;
     }
   }, {
     key: 'componentWillMount',
@@ -47649,7 +47634,9 @@ var Leafletmap = function (_React$Component) {
           return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             Marker,
             { key: indx, position: [marker.coordinates.latitude, marker.coordinates.longitude],
-              sytle: { zIndex: 5 }, __source: {
+              sytle: { zIndex: 5 }, onClick: function onClick() {
+                return _this2.focusOnList(marker.id);
+              }, __source: {
                 fileName: _jsxFileName,
                 lineNumber: 47
               },
@@ -47692,24 +47679,7 @@ var Leafletmap = function (_React$Component) {
                   },
                   __self: _this2
                 }),
-                marker.phone,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', {
-                  __source: {
-                    fileName: _jsxFileName,
-                    lineNumber: 50
-                  },
-                  __self: _this2
-                }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'a',
-                  { onClick: _this2.handleClick, __source: {
-                      fileName: _jsxFileName,
-                      lineNumber: 50
-                    },
-                    __self: _this2
-                  },
-                  'Reviews'
-                )
+                marker.phone
               )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -55114,6 +55084,39 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
+/*import {Link} from 'react-router-dom';
+import Searchbar from './Searchbar';
+
+class Navbar extends React.Component {
+    constructor(){
+      super();
+      this.state = {
+        collapsed:true,
+      };
+    }
+    
+    toggleCollapse(){
+        var collapsed = !this.state.collapsed;
+        this.setState({collapsed});
+    }
+    collapse(){
+        if (!this.state.collapsed)
+          this.setState({collapsed:true});
+    }
+     render(){
+
+       const navClass = this.state.collapsed ? "collapse" : "";
+         return(
+           <nav class="navbar navbar-default">
+             <div class="container-fluid">
+                <div class="navbar-header">
+                    <Link class="navbar-brand" to="/">Nightlife Coordination App</Link>
+                </div>
+              </div>
+            </nav>  
+         )
+     }
+}*/
 
 var Navbar = function (_React$Component) {
     _inherits(Navbar, _React$Component);
@@ -55131,7 +55134,7 @@ var Navbar = function (_React$Component) {
                 'div',
                 { className: 'titlebar col-md-12', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 7
+                        lineNumber: 41
                     },
                     __self: this
                 },
@@ -55139,7 +55142,7 @@ var Navbar = function (_React$Component) {
                     'span',
                     { className: 'apptitle', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 8
+                            lineNumber: 42
                         },
                         __self: this
                     },
@@ -55149,13 +55152,13 @@ var Navbar = function (_React$Component) {
                     'a',
                     { className: 'logbtn', href: '/logout', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 9
+                            lineNumber: 43
                         },
                         __self: this
                     },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-in-alt', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 9
+                            lineNumber: 43
                         },
                         __self: this
                     }),
@@ -55164,13 +55167,13 @@ var Navbar = function (_React$Component) {
                     'a',
                     { className: 'logbtn', href: '/auth/github', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 10
+                            lineNumber: 44
                         },
                         __self: this
                     },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-sign-out-alt', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 10
+                            lineNumber: 44
                         },
                         __self: this
                     }),
@@ -55265,13 +55268,74 @@ var ResultsStore = function (_EventEmitter) {
 var resultsStore = new ResultsStore();
 __WEBPACK_IMPORTED_MODULE_1__dispatcher__["a" /* default */].register(resultsStore.handleActions.bind(resultsStore));
 
-/* harmony default export */ __webpack_exports__["a"] = (resultsStore);
+/* unused harmony default export */ var _unused_webpack_default_export = (resultsStore);
 
 /***/ }),
 /* 511 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 512 */,
+/* 513 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var _jsxFileName = '/home/ubuntu/workspace/src/shared/components/Button.js';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Button = function (_React$Component) {
+    _inherits(Button, _React$Component);
+
+    function Button(props) {
+        _classCallCheck(this, Button);
+
+        return _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props));
+    }
+
+    _createClass(Button, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'btn-group', __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 11
+                    },
+                    __self: this
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { type: 'button', className: 'btn', 'data-toggle': 'tooltip', disabled: this.props.disabled, title: this.props.title, onClick: this.props.func, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 12
+                        },
+                        __self: this
+                    },
+                    this.props.text
+                )
+            );
+        }
+    }]);
+
+    return Button;
+}(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["a"] = (Button);
 
 /***/ })
 /******/ ]);

@@ -3,6 +3,7 @@
 import React from 'react';
 import Action from '../actions/BarAction.js';
 import Star from './Star.js';
+import Button from './Button.js';
 
 class Bar extends React.Component{
     constructor(props){
@@ -49,20 +50,15 @@ class Bar extends React.Component{
                     <h4> {this.state.going} people going here tonight</h4>
                     <Star rating={this.props.rating} review_count={this.props.review_count}/>
                     <div class="btn-group btn-group-justified" role="group">
-                    <div class="btn-group">
-                      <button type="button" class="btn" data-toggle="tooltip" title="Zoom on map" onClick={this.zoom.bind(this)}>Zoom</button>
-                     </div>
-                     <div class="btn-group">
-                      <button type="button" class="btn" data-toggle="tooltip" title="View reviews" onClick={this.getReview.bind(this)}>Reviews</button>
-                     </div>
+                    <Button title="Zoom on map" func={this.zoom.bind(this)} text="Zoom" disabled={false}/>
+                    <Button title="View reviews" func={this.getReview.bind(this)} text="Reviews"  disabled={false}/>
                         { !this.props.loggedin
                             ? null
                             : ( this.props.added
-                                ? <div class="btn-group"><button disabled={!this.state.removeclickable} type="button" class="btn" data-toggle="tooltip" title="Remove your presence" onClick={this.removeToGo.bind(this)}>Remove</button></div>
-                                : <div class="btn-group"><button disabled={!this.state.addclickable} type="button" class="btn" data-toggle="tooltip" title="Indicate your presence" onClick={this.addToGo.bind(this)}>Add</button></div>
+                                ?<Button title="Remove your presence" func={this.removeToGo.bind(this)} text="Remove"  disabled={!this.state.removeclickable}/>
+                                :<Button title="Indicate your presence" func={this.addToGo.bind(this)} text="Add"  disabled={!this.state.addclickable}/>
                             )
                         }
-
                     </div>
                 </div>
                 
