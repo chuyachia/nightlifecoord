@@ -2,13 +2,10 @@
 
 import React from 'react';
 import Barlist from '../components/Barlist.js';
-import Bar from '../components/Bar.js';
-import Searchbar from '../components/Searchbar.js';
 import Leafletmap from '../components/Map.js';
 import Modal from '../components/Modal.js';
 import Navbar from '../components/Navbar.js';
 import ResultsStore from '../stores/ResultsStore.js';
-import "isomorphic-fetch";
 import "./Results.css";
 
 
@@ -16,8 +13,8 @@ class Results extends React.Component{
     constructor(props){
         super(props);
         let initialData;
-        let loggedIn =false;
-        if (!this.props.staticContext) {
+        let loggedIn;
+        if (typeof window !== 'undefined') {
           initialData = window.__initialData__;
           loggedIn = window.__loggedIn__;
           delete window.__initialData__;
@@ -27,61 +24,51 @@ class Results extends React.Component{
             loggedIn = this.props.staticContext.loggedIn;
         }
         this.state={
-            businesses:initialData?initialData.businesses:[],
-            togo:initialData?initialData.togo:[],
-            lon:initialData?initialData.region.center.longitude: -0.09,
-            lat:initialData?initialData.region.center.latitude:51.505,
-            loggedin:loggedIn,
-            term:this.props.location?this.props.location.term:''
+            businesses:this.props.location.state?this.props.location.state.businesses:initialData.businesses,
+            togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
+            region:this.props.location.state?this.props.location.state.region:initialData.region,
+            loggedin:loggedIn
         };
     }
- 
-    componentDidMount() {
-        //called only on the browser
-        if (this.state.businesses.length==0) {
-            console.log('fetch data from browser');
-          Results.requestInitialData(this.state.term).then(data =>
-          this.setState(
-              { businesses: data.businesses,
-                togo: data.togo,
-                lon:data.region.center.longitude,
-                lat:data.region.center.latitude,
-              }
-            )
-            );
-        }
+     getData() {
+        var data = ResultsStore.getAll();
+        this.setState({
+          businesses:data.businesses,
+          togo :data.togo,
+          region:data.region
+        });
+    }
+    getToGo(){
+        var data = ResultsStore.getToGo();
+        this.setState({
+          togo :data
+        });
+    }
+    componentWillMount() {
+        ResultsStore.on("newdata", this.getData.bind(this));
+        ResultsStore.on("newplace", this.getToGo.bind(this));
     }
 
-
+    componentWillUnmount() {
+        ResultsStore.removeListener("newdata", this.getData.bind(this));
+        ResultsStore.removeListener("newplace", this.getToGo.bind(this));
+    }
     render(){
-        const { businesses,togo,lon,lat, loggedin,term } = this.state;
         return(
-        <div>
+        <div class='container-fluid'>
         <Modal/>
-        <Navbar loggedin ={loggedin}/>
-        <div class="row maincontent">
+        <div class="row">
+        <Navbar loggedin ={this.state.loggedin}/>
         <div class="col-md-4 resultlist">
-        <div>
-        <Searchbar/>
-            {businesses.map(function(bar,indx){
-                return <Bar key = {indx} id ={bar.id} image_url={bar.image_url} name={bar.name} price={bar.price} categories={bar.categories}
-                going={bar.going} rating={bar.rating} review_count = {bar.review_count}
-                added= {togo.indexOf(bar.id) == -1?false:true} lat={bar.coordinates.latitude} lon={bar.coordinates.longitude}/>;
-            })}
-            </div>
+        <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo}/>
         </div>
         <div class="col-md-8">
-        <Leafletmap lon= {lon} lat= {lat} markers = {businesses} />
+        <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
         </div>
         </div>
-        </div>)
+        </div>);
     }
 }
 
-/*        
-         
-        <Barlist businesses = {this.state.data.businesses} togo={this.state.data.togo}/>
 
-       
-*/
 export default Results;

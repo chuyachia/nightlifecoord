@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-/*import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Searchbar from './Searchbar';
 
 class Navbar extends React.Component {
@@ -29,22 +29,17 @@ class Navbar extends React.Component {
                 <div class="navbar-header">
                     <Link class="navbar-brand" to="/">Nightlife Coordination App</Link>
                 </div>
+                <Searchbar nav={true}/>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>{this.props.loggedin?<a class='logbtn' href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
+                        <a class='logbtn' href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
+                    }</li>
+                </ul>
               </div>
             </nav>  
          )
      }
-}*/
-
-
-class Navbar extends React.Component{
-    render(){
-        return(<div class='titlebar col-md-12'>
-        <span class='apptitle'>Nightlife Coordination App</span>
-        {this.props.loggedin?<a class='logbtn' href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
-            <a class='logbtn' href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
-        }
-        </div>
-        );
-    }
 }
+
+
 export default Navbar;

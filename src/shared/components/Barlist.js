@@ -9,7 +9,6 @@ class Barlist extends React.Component{
 
     render(){
         return(<div>
-            <Searchbar/>
             {this.props.businesses.map((bar,indx) => {
                 return <Bar key = {indx} id ={bar.id} image_url={bar.image_url} name={bar.name} 
                 price={bar.price} categories={bar.categories}
