@@ -1,5 +1,5 @@
 'use strict';
-//            <Tooltip>{marker.name}</Tooltip> 
+
 import React from 'react';
 import MapStore from '../stores/MapStore.js';
 
@@ -14,8 +14,9 @@ class Leafletmap extends React.Component{
       var coord= MapStore.getZoom();
       this.mapInstance.leafletElement.flyTo([coord.latitude,coord.longitude], 18);
     }
-    handleClick(e){
-      console.log(e);
+    handleClick(id){
+      console.log(id);
+      console.log('clicked');
     }
     componentWillMount() {
         MapStore.on("zoom",this.flyTo.bind(this));
@@ -44,9 +45,9 @@ class Leafletmap extends React.Component{
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           {this.props.markers.map((marker,indx) => {
             return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
-            onClick={this.handleClick} sytle={{zIndex:5}}>
+            sytle={{zIndex:5}}>
             <Popup><span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
-            {marker.phone}</span></Popup>
+            {marker.phone}<br/><a onClick={this.handleClick}>Reviews</a></span></Popup>
             <Tooltip><span>{marker.name}</span></Tooltip>
             </Marker>;
           })}
