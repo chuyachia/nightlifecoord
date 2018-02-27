@@ -79,7 +79,8 @@ function returnData(req,res){
 
 function returnHtml(req,res){
       const initialData = res.locals.response;
-      const context = {initialData}
+      const loggedIn = res.locals.loggedin;
+      const context = {initialData,loggedIn};
       const markup = renderToString(
         <StaticRouter location={req.url} context={context}>
           <App />
@@ -95,7 +96,7 @@ function returnHtml(req,res){
           <link rel="stylesheet" href="/css/main.css">
           <script src="/bundle.js" defer></script>
           <script>window.__initialData__ = ${serialize(initialData)}</script>
-          <script>window.__loggedIn__ = ${serialize(res.locals.loggedin)}</script>
+          <script>window.__loggedIn__ = ${serialize(loggedIn)}</script>
         </head>
         <body>
           <div id="root">${markup}</div>

@@ -38,7 +38,7 @@ class Modal extends React.Component{
         <ReactModal style={modalStyles}
            isOpen={this.state.open}
            contentLabel="Review Modal">
-          <button onClick={this.close.bind(this)} style={{float:"right"}}>X</button>
+          <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}><i class="fas fa-times" onClick={this.close.bind(this)}/></a>
            <h3>{this.state.bar}</h3>
            {reviewlist}
         </ReactModal>

@@ -5,15 +5,21 @@ import Action from '../actions/BarAction.js';
 import Star from './Star.js';
 import Button from './Button.js';
 
+
 class Bar extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            going:this.props.going,
             addclickable:true,
             removeclickable:true
         };
     }
+    componentWillReceiveProps(){
+         this.setState({
+            addclickable:true,
+            removeclickable:true 
+         })
+     }
     zoom(){
         Action.zoom({latitude:this.props.lat, longitude:this.props.lon});
     }
@@ -21,23 +27,20 @@ class Bar extends React.Component{
         Action.getReview(this.props.id,this.props.name);
     }
     addToGo(){
-        this.disabled = true;
-        Action.addToGo(this.props.id);
+        Action.addToGo(this.props.id,this.props.seq);
         this.setState({
-            going:this.state.going+1,
             addclickable:false,
-            removeclickable:true,
+            removeclickable:true
         });
     }
     removeToGo(){
-        this.disabled = true;
-        Action.removeToGo(this.props.id);
+        Action.removeToGo(this.props.id,this.props.seq);
         this.setState({
-            going:this.state.going-1,
-            removeclickable:false,
             addclickable:true,
+            removeclickable:false
         });
     }
+    
     render(){
         return(
             <div id = {this.props.id} class='result'>
@@ -47,7 +50,7 @@ class Bar extends React.Component{
                 <div class="caption">
                     <h3>{this.props.name}</h3>
                     <h5>{this.props.price} | {this.props.categories[0].title}</h5>
-                    <h4> {this.state.going} people going here tonight</h4>
+                    <h4> {this.props.going} people going here tonight</h4>
                     <Star rating={this.props.rating} review_count={this.props.review_count}/>
                     <div class="btn-group btn-group-justified" role="group">
                     <Button title="Zoom on map" func={this.zoom.bind(this)} text="Zoom" disabled={false}/>

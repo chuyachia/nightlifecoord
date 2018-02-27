@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path:"*",
-    component: Welcome
+    component: null
   }
 ];
 

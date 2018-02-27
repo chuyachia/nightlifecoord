@@ -5,6 +5,7 @@ import Barlist from '../components/Barlist.js';
 import Leafletmap from '../components/Map.js';
 import Modal from '../components/Modal.js';
 import Navbar from '../components/Navbar.js';
+import Footer from '../components/Footer.js';
 import ResultsStore from '../stores/ResultsStore.js';
 import "./Results.css";
 
@@ -65,6 +66,7 @@ class Results extends React.Component{
         <div class="col-md-9">
         <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
         </div>
+        <Footer/>
         </div>
         </div>);
     }

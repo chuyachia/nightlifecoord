@@ -2,18 +2,20 @@ import dispatcher from "../dispatcher.js";
 import axios from 'axios';
 
 function barActions(){
-    this.addToGo = function(id){
+    this.addToGo = function(id,key){
         axios.post('/place/'+id)
         .then(response=> dispatcher.dispatch({
             type:"ADD_PLACE",
+            key : key,
             togo:response.data.places
         }))
         .catch(error => console.log(error));
     };
-    this.removeToGo = function(id){
+    this.removeToGo = function(id,key){
         axios.delete('/place/'+id)
         .then(response=> dispatcher.dispatch({
             type:"REMOVE_PLACE",
+            key : key,
             togo:response.data.places
         }))
         .catch(error => console.log(error));

@@ -41,6 +41,9 @@ class Navbar extends React.Component {
                     <li>{this.props.loggedin?<a class='logbtn' onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
                         <a class='logbtn' onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
                     }</li>
+                    <li>
+                    <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/" target="_blank"><i class="fas fa-code"/></a>
+                    </li>
                 </ul>
                 </div>
               </div>

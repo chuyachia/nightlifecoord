@@ -23,9 +23,9 @@ class Searchbar extends React.Component{
       <form class={this.props.nav?"navbar-form navbar-left":""} onSubmit={this.submitSearch.bind(this)}>
         <div class="input-group">
           <input onChange={this.addSearchTerm.bind(this)} type="search" class="form-control" 
-          placeholder="Enter a city" required/>
+          placeholder="Enter a city" required autoFocus={!this.props.nav}/>
           <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" disabled={this.props.disabled}>
               Start
             </button> 
           </span>

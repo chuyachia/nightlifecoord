@@ -1,14 +1,14 @@
 
 .resultlist{
     overflow:auto;
-    height:85vh;
+    height:90vh;
 }
 .result{
- margin-top:20px;
- margin-bottom:20px;  
+    margin-top:20px;
+    margin-bottom:20px;  
 }
 .map {
-    height:85vh;
+    height:90vh;
     z-index:1
 }
 .star {
@@ -37,4 +37,17 @@
     width: 10px;
     overflow: hidden;
 }
+.footer {
+    position:fixed;
+    bottom:0;
+    right:0;
+    text-align: right;
+    padding:15px;
+    z-index:2
+}
 
+.footericon{
+    position:relative;
+    display:block;
+    margin-top:5px;
+}
