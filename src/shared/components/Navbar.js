@@ -48,7 +48,7 @@ class Navbar extends React.Component {
                     <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/>My Profile</a>
                     </li>:null}
                     <li>
-                        <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/" target="_blank"><i class="fas fa-code"/></a>
+                        <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/nightlifecoord" target="_blank"><i class="fas fa-code"/></a>
                     </li>
                 </ul>
                 </div>
