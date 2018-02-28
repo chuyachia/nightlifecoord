@@ -1,5 +1,5 @@
 {
   "plugins": [
-    "react-html-attrs","emotion"
+    "react-html-attrs"
   ]
 }

@@ -6,7 +6,7 @@ import WelcomeStore from '../stores/WelcomeStore.js';
 import Searchbar from '../components/Searchbar.js';
 import Footer from '../components/Footer.js';
 import "./Welcome.css";
-//import { RingLoader } from 'react-spinners';
+
 
 
 class Welcome extends React.Component {
