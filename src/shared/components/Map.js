@@ -38,7 +38,7 @@ class Leafletmap extends React.Component{
       (Map)
       ? (
         <Map center={[this.props.lat,this.props.lon]} zoom={13} class="map" ref={e => { this.mapInstance = e }}
-        useFlyTo={true} 
+        
         >
         <TileLayer
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

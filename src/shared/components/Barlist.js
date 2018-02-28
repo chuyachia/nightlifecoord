@@ -82,9 +82,9 @@ class Barlist extends React.Component{
     render(){
         var togo = this.props.togo.map(bar => bar.id);
         return(
-        <div>Sort by:
+        <div><h5>Sort by
         <span style={{float:'right'}}>
-        Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span>
+        Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
         Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span></span>
             {this.state.businesses.map((bar,indx) => {
                 return <Bar key = {indx} seq={indx} id ={bar.id} 
@@ -95,7 +95,7 @@ class Barlist extends React.Component{
                 lat={bar.coordinates.latitude} lon={bar.coordinates.longitude} 
                 country={bar.location.country} city={bar.location.city}
                 loggedin = {this.props.loggedin}/>;
-            })}
+            })}</h5>
             </div>);
             
     }
