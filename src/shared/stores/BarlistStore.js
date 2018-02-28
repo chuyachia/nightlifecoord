@@ -12,6 +12,7 @@ class BarlistStore extends EventEmitter {
             break;
           }
           case "ADD_PLACE": {
+            console.log('barlist store receive add');
             this.emit("plusone", action.key);
             break;
           }

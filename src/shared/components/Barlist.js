@@ -1,14 +1,17 @@
 import React from 'react';
 import Bar from './Bar.js';
 import BarlistStore from '../stores/BarlistStore.js';
+import orderBy from "lodash.orderby";
 
 class Barlist extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            barids:this.props.businesses.map(bar=>bar.id),
-            going:this.props.businesses.map(bar=> bar.going)
+            businesses:this.props.businesses,
+            priceicon:0,
+            reviewsicon:0
         };
+        this.sorticon = [<i class="fas fa-sort"/>,<i class="fas fa-sort-up"/>,<i class="fas fa-sort-down"/>];
     }
     componentWillMount() {
         BarlistStore.on("newdata", this.getNewData.bind(this));
@@ -26,39 +29,68 @@ class Barlist extends React.Component{
     }
     getNewData(businesses){
         this.setState({
-            barids:businesses.map(bar=>bar.id),
-            going:businesses.map(bar=> bar.going),
+            businesses:businesses,
+            priceicon:0,
+            reviewsicon:0
         });
     }
     plusOne(key){
-        var newgoing = this.state.going;
-        newgoing[key]+=1;
+        var businesses = this.state.businesses;
+        businesses[key].going+=1;
         this.setState({
-            going:newgoing
+            businesses:businesses
         });
     }
     minusOne(key){
-        var newgoing = this.state.going;
-        newgoing[key]-=1;
+        var businesses = this.state.businesses;
+        businesses[key].going-=1;
         this.setState({
-            going:newgoing
+            businesses:businesses
         });
     }
     minusWhenMatch(id){
-        var matchid = this.state.barids.indexOf(id);
+        var barids=this.state.businesses.map(bar=>bar.id);
+        var matchid = barids.indexOf(id);
         if (matchid!==-1) {
             this.minusOne(matchid);
         }
     }
-
+    changeOrderBy(criteria){
+        switch(criteria){
+            case 'price':{
+                var order = this.state.priceicon%2+1==1?'asc':'desc';
+                var businesses = orderBy(this.state.businesses,function(bar) { return bar.price.length;},order);
+                this.setState({
+                    businesses:businesses,
+                    priceicon:this.state.priceicon%2+1,
+                    reviewsicon:0
+                });
+                break;
+            }
+            case 'reviews':{
+               var order = this.state.reviewsicon%2+1==1?'asc':'desc';
+               var businesses = orderBy(this.state.businesses,'review_count',order);
+               this.setState({
+                    businesses:businesses,
+                    reviewsicon:this.state.reviewsicon%2+1,
+                    priceicon:0
+                });
+                break;
+            }
+        }
+    }
     render(){
         var togo = this.props.togo.map(bar => bar.id);
-        return(<div>
-            {this.props.businesses.map((bar,indx) => {
+        return(
+        <div>Sort by:
+        <span style={{float:'right'}}>
+        Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span>
+        Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span></span>
+            {this.state.businesses.map((bar,indx) => {
                 return <Bar key = {indx} seq={indx} id ={bar.id} 
                 image_url={bar.image_url} name={bar.name} 
                 price={bar.price} categories={bar.categories}
-                going={this.state.going[indx]} rating={bar.rating} review_count = {bar.review_count}
+                going={bar.going} rating={bar.rating} review_count = {bar.review_count}
                 added= {togo.indexOf(bar.id) == -1?false:true} 
                 lat={bar.coordinates.latitude} lon={bar.coordinates.longitude} 
                 country={bar.location.country} city={bar.location.city}
