@@ -4,6 +4,7 @@ import React from 'react';
 import Barlist from '../components/Barlist.js';
 import Leafletmap from '../components/Map.js';
 import Modal from '../components/Modal.js';
+import ProfileModal from '../components/ProfileModal.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import ResultsStore from '../stores/ResultsStore.js';
@@ -58,6 +59,7 @@ class Results extends React.Component{
         return(
         <div class='container-fluid'>
         <Modal/>
+        <ProfileModal/>
         <div class="row">
         <Navbar loggedin ={this.state.loggedin}/>
         <div class="col-md-3 resultlist">

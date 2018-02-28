@@ -3,6 +3,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Searchbar from './Searchbar';
+import Action from '../actions/NavbarAction.js';
 
 class Navbar extends React.Component {
     constructor(){
@@ -11,7 +12,9 @@ class Navbar extends React.Component {
         collapsed:true,
       };
     }
-    
+    getOwnGoing(){
+        Action.getOwnGoing();
+    }
     toggleCollapse(){
         var collapsed = !this.state.collapsed;
         this.setState({collapsed});
@@ -38,11 +41,14 @@ class Navbar extends React.Component {
                 <div class={"navbar-collapse "+navClass}  id="navbarColor01">
                 <Searchbar nav={true} collapse={this.collapse.bind(this)}/>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>{this.props.loggedin?<a class='logbtn' onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
-                        <a class='logbtn' onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
+                    <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
+                        <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
                     }</li>
+                    {this.props.loggedin?<li>
+                    <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/>My Profile</a>
+                    </li>:null}
                     <li>
-                    <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/" target="_blank"><i class="fas fa-code"/></a>
+                        <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/" target="_blank"><i class="fas fa-code"/></a>
                     </li>
                 </ul>
                 </div>

@@ -8,18 +8,19 @@ class BarlistStore extends EventEmitter {
     handleActions(action) {
         switch(action.type) {
          case "NEW_SEARCH": {
-            console.log('Barlist store received data');
             this.emit("newdata",action.data.businesses);
             break;
           }
           case "ADD_PLACE": {
-            console.log('Barlist store received data');
             this.emit("plusone", action.key);
             break;
           }
          case "REMOVE_PLACE": {
-            console.log('Barlist store received data');
             this.emit("minusone", action.key);
+            break;
+          }
+        case "REMOVE_PLACE_PROFILE": {
+            this.emit("minusifmatch",action.id);
             break;
           }
         }

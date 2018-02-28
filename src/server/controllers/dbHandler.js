@@ -21,7 +21,7 @@ function dbHandler(){
       var count_dict ={};
       Users.aggregate([{$unwind:"$places"},
                           {$group:
-                           {_id:"$places",
+                           {_id:"$places.id",
                            count:{$sum:1}}}])
     .exec(function(err,result){
       if (err) throw err;
@@ -34,7 +34,11 @@ function dbHandler(){
   };
   
   this.addPlace = function(req,res){
-    Users.findOneAndUpdate({'github.id':req.user.github.id},{$push:{places:req.params.placeid}},{new:true})
+    Users.findOneAndUpdate({'github.id':req.user.github.id},
+    {$push:{
+      places:{'id':req.params.placeid,'name':req.params.name,'country':req.params.country,'city':req.params.city}
+    }},
+    {new:true})
     .exec(function(err,result){
         if (err) throw err;
         console.log('New place added');
@@ -43,7 +47,11 @@ function dbHandler(){
   };
   
   this.deletePlace = function(req,res){
-        Users.findOneAndUpdate({'github.id':req.user.github.id},{$pull:{places:req.params.placeid}},{new:true})
+        Users.findOneAndUpdate({'github.id':req.user.github.id},
+        {$pull:{
+          places:{id:req.params.placeid}
+        }},
+        {new:true})
     .exec(function(err,result){
         if (err) throw err;
         console.log('Place removed');

@@ -112,7 +112,14 @@ app.route('/search/:location')
 app.route('/review/:placeid')
     .get(searchHandler.getToken,searchHandler.getReview);
 
-app.route('/place/:placeid')
+app.route('/togo')
+    .get(isLoggedIn,dbHandler.getOwnGoing,
+    function(req,res){
+      res.send(res.locals.owngoing);
+    }
+    );
+    
+app.route('/place/:placeid/:name/:country/:city')
     .post(isLoggedIn,dbHandler.addPlace)
     .delete(isLoggedIn,dbHandler.deletePlace)
 

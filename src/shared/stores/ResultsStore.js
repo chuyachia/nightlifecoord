@@ -18,7 +18,6 @@ class ResultsStore extends EventEmitter {
     handleActions(action) {
         switch(action.type) {
         case "NEW_SEARCH": {
-            console.log('Results store received data');
             this.businesses = action.data.businesses;
             this.togo= action.data.togo;
             this.region = action.data.region;
@@ -26,13 +25,16 @@ class ResultsStore extends EventEmitter {
             break;
           }
           case "ADD_PLACE": {
-            console.log('Results store received new places')
             this.togo= action.togo;
             this.emit("newplace");
             break;
           }
         case "REMOVE_PLACE": {
-            console.log('Results store remove places')
+            this.togo= action.togo;
+            this.emit("newplace");
+            break;
+          }
+          case "REMOVE_PLACE_PROFILE": {
             this.togo= action.togo;
             this.emit("newplace");
             break;
