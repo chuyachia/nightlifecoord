@@ -57526,6 +57526,7 @@ var Modal = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react_modal___default.a,
                 { style: modalStyles,
                     isOpen: this.state.open,
+                    ariaHideApp: false,
                     contentLabel: 'Review Modal', __source: {
                         fileName: _jsxFileName,
                         lineNumber: 38
@@ -57536,13 +57537,13 @@ var Modal = function (_React$Component) {
                     'a',
                     { className: 'leaflet-popup-close-button', style: { float: "right", cursor: "pointer" }, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 41
+                            lineNumber: 42
                         },
                         __self: this
                     },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-times', onClick: this.close.bind(this), __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 41
+                            lineNumber: 42
                         },
                         __self: this
                     })
@@ -57552,7 +57553,7 @@ var Modal = function (_React$Component) {
                     {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 42
+                            lineNumber: 43
                         },
                         __self: this
                     },
@@ -58738,6 +58739,7 @@ var ProfileModal = function (_React$Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react_modal___default.a,
                 { style: modalStyles,
                     isOpen: this.state.open,
+                    ariaHideApp: false,
                     contentLabel: 'Review Modal', __source: {
                         fileName: _jsxFileName,
                         lineNumber: 46
@@ -58748,13 +58750,13 @@ var ProfileModal = function (_React$Component) {
                     'a',
                     { className: 'leaflet-popup-close-button', style: { float: "right", cursor: "pointer" }, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 49
+                            lineNumber: 50
                         },
                         __self: this
                     },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fas fa-times', onClick: this.close.bind(this), __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 50
+                            lineNumber: 51
                         },
                         __self: this
                     })
@@ -58764,7 +58766,7 @@ var ProfileModal = function (_React$Component) {
                     {
                         __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 51
+                            lineNumber: 52
                         },
                         __self: this
                     },
@@ -58774,7 +58776,7 @@ var ProfileModal = function (_React$Component) {
                     'div',
                     { className: 'row', __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 52
+                            lineNumber: 53
                         },
                         __self: this
                     },
@@ -58782,7 +58784,7 @@ var ProfileModal = function (_React$Component) {
                         'div',
                         { className: 'col-md-4', __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 53
+                                lineNumber: 54
                             },
                             __self: this
                         },
@@ -58791,7 +58793,7 @@ var ProfileModal = function (_React$Component) {
                             {
                                 __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 53
+                                    lineNumber: 54
                                 },
                                 __self: this
                             },
@@ -58803,7 +58805,7 @@ var ProfileModal = function (_React$Component) {
                             'div',
                             { className: 'col-md-4', key: indx, __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 55
+                                    lineNumber: 56
                                 },
                                 __self: _this2
                             },
@@ -58812,7 +58814,7 @@ var ProfileModal = function (_React$Component) {
                                 {
                                     __source: {
                                         fileName: _jsxFileName,
-                                        lineNumber: 55
+                                        lineNumber: 56
                                     },
                                     __self: _this2
                                 },
@@ -58828,7 +58830,7 @@ var ProfileModal = function (_React$Component) {
                                     return _this2.removeToGo(bar.id, bar.name, bar.country, bar.city);
                                 }, text: 'Remove', __source: {
                                     fileName: _jsxFileName,
-                                    lineNumber: 56
+                                    lineNumber: 57
                                 },
                                 __self: _this2
                             })

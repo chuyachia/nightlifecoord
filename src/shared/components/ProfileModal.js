@@ -45,6 +45,7 @@ class ProfileModal extends React.Component{
         return(
         <ReactModal style={modalStyles}
            isOpen={this.state.open}
+           ariaHideApp={false}
            contentLabel="Review Modal">
           <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}>
           <i class="fas fa-times" onClick={this.close.bind(this)}/></a>
