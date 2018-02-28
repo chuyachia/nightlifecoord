@@ -58461,7 +58461,7 @@ var Navbar = function (_React$Component) {
                 },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'a',
-                  { className: true, onClick: this.collapse.bind(this), href: 'https://github.com/chuyachia/', target: '_blank', __source: {
+                  { className: true, onClick: this.collapse.bind(this), href: 'https://github.com/chuyachia/nightlifecoord', target: '_blank', __source: {
                       fileName: _jsxFileName,
                       lineNumber: 51
                     },
