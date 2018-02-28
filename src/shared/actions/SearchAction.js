@@ -1,6 +1,6 @@
+require('es6-promise').polyfill();
 import dispatcher from "../dispatcher.js";
 import axios from 'axios';
-import "isomorphic-fetch";
 
 function searchActions(){
     this.getSearchResults = function(term){

@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 import dispatcher from "../dispatcher.js";
 import axios from 'axios';
 

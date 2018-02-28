@@ -1,5 +1,5 @@
 {
   "plugins": [
-    "react-html-attrs"
+    "react-html-attrs","transform-object-assign"
   ]
 }
