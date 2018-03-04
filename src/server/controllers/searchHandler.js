@@ -8,8 +8,11 @@ import cache from 'memory-cache';
 
 function searchHandler(){
   
+  /* Oauth2 deprecated in YELP API
   this.getToken= function(req,res,next) {
     if(cache.get('token')) {
+      console.log('Retrieved token');
+      console.log(cache.get('token'));
       res.locals.token = cache.get('token');
       next();
       
@@ -36,6 +39,8 @@ function searchHandler(){
           var responseObject = JSON.parse(responseString);
           cache.put('token', responseObject);
           res.locals.token = responseObject;
+          console.log('Get new token');
+          console.log(responseObject);
           next();
         });
         
@@ -44,7 +49,7 @@ function searchHandler(){
       apireq.end();
       
     } 
-  };
+  };*/
 
   
   this.getSearch = function(req,res,next){
@@ -60,7 +65,7 @@ function searchHandler(){
         path:"/v3/businesses/search?"+getParams,
         method:"GET",
          headers: {
-           "Authorization" : res.locals.token.token_type+" "+res.locals.token.access_token
+           "Authorization" : "Bearer "+process.env.YELP_API_KEY
          }
     };
     
@@ -77,7 +82,6 @@ function searchHandler(){
 
           
           var responseObject = JSON.parse(responseString);
-          
             if (responseObject.businesses) {
               responseObject.businesses.forEach(function(el){
                 if (el.id in res.locals.count_dict) {
@@ -91,7 +95,7 @@ function searchHandler(){
               next();
             }
           else{
-            res.redirect('back');
+            res.send(responseObject);
           }
         });        
       });
@@ -105,7 +109,7 @@ function searchHandler(){
         path:"/v3/businesses/"+encodeURI(req.params.placeid)+"/reviews",
         method:"GET",
          headers: {
-           "Authorization" : res.locals.token.token_type+" "+res.locals.token.access_token
+           "Authorization" : "Bearer "+process.env.YELP_API_KEY
          }
     };
     var apireq= https.request(options, function(apires) {

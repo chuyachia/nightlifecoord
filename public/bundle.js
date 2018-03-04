@@ -47010,15 +47010,17 @@ __webpack_require__(68).polyfill();
 function searchActions() {
     this.getSearchResults = function (term) {
         __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/search/' + term).then(function (response) {
-            return __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+            return response.data.error ? __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+                type: "SEARCH_ERROR"
+            }) : __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
                 type: "NEW_SEARCH",
                 data: response.data
             });
         }).catch(function (error) {
-            return console.log(error);
-        } /*dispatcher.dispatch({
-          type:"SEARCH_ERROR"
-          })*/);
+            return __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+                type: "SEARCH_ERROR"
+            });
+        });
     };
 }
 

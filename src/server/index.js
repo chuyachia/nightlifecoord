@@ -106,11 +106,11 @@ function returnHtml(req,res){
 }
 
 app.route('/search/:location')
-    .get(searchHandler.getToken,dbHandler.getOwnGoing,dbHandler.getAllGoing,searchHandler.getSearch,returnData);
+    .get(dbHandler.getOwnGoing,dbHandler.getAllGoing,searchHandler.getSearch,returnData);
     
 
 app.route('/review/:placeid')
-    .get(searchHandler.getToken,searchHandler.getReview);
+    .get(searchHandler.getReview);
 
 app.route('/togo')
     .get(isLoggedIn,dbHandler.getOwnGoing,
@@ -135,9 +135,12 @@ app.get("*",
     }
   },function(req,res,next){
     req.params.location =cache.get('lastsearch');
+    if (!req.params.location){
+      res.redirect('/');
+    } else{
     next();
+    }
   },
-  searchHandler.getToken,
   dbHandler.getOwnGoing,
   dbHandler.getAllGoing,
   searchHandler.getSearch,
