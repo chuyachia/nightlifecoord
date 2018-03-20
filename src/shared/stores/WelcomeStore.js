@@ -12,14 +12,16 @@ class WelcomeStore extends EventEmitter {
     handleActions(action) {
         switch(action.type) {
           case "NEW_SEARCH": {
-            console.log('Welcome store received data');
             this.data = action.data;
             this.emit("ready");
             break;
           }
            case "SEARCH_ERROR": {
-            console.log('Welcome store received error');
             this.emit("searcherror");
+            break;
+          }
+         case "SEARCH_NOT_FOUND": {
+            this.emit("searchnotfound");
             break;
           }
         }

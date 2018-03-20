@@ -14,7 +14,8 @@ class Welcome extends React.Component {
         super();
         this.getData = this.getData.bind(this);
         this.throwError = this.throwError.bind(this);
-        this.state={term:'',data:{},error:false,disabled:true};
+        this.notFound = this.notFound.bind(this);
+        this.state={term:'',data:{},error:false,disabled:true,notfound:false};
     }
     getData() {
         this.setState({
@@ -26,9 +27,15 @@ class Welcome extends React.Component {
         error:true
       });
     }
+    notFound(){
+      this.setState({
+        notfound:true
+      });
+    }
     componentWillMount() {
         WelcomeStore.on("ready", this.getData);
         WelcomeStore.on('searcherror',this.throwError);
+        WelcomeStore.on('searchnotfound',this.notFound);
     }
     componentDidMount(){
       this.setState({disabled:false});
@@ -38,6 +45,7 @@ class Welcome extends React.Component {
         console.log('welcome will unmount');
         WelcomeStore.removeListener("ready", this.getData);
         WelcomeStore.removeListener('searcherror',this.throwError);
+        WelcomeStore.removeListener('searchnotfound',this.notFound);
     }
     render(){
         return(
@@ -46,6 +54,7 @@ class Welcome extends React.Component {
       <h2>Search for bars in your area and see where everyone else is going</h2>
       <Searchbar nav={false} collapse={null} disabled={this.state.disabled}/>
       {this.state.error && <span>Oups, something went wrong. I can't get the search results. Please come back later.</span>}
+      {this.state.notfound && <span>Can't find data with the specified location. Please try another location.</span>}
         {this.state.data.businesses &&
           <Redirect to={{
             pathname: '/results',

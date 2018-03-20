@@ -5,16 +5,24 @@ import axios from 'axios';
 function searchActions(){
     this.getSearchResults = function(term){
          axios.get('/search/'+term)
-          .then(response => response.data.error?
-                dispatcher.dispatch({
-                    type:"SEARCH_ERROR"
-                }):dispatcher.dispatch({
+          .then(response => {
+              if(response.data.error){
+                    dispatcher.dispatch({
+                        type:"SEARCH_NOT_FOUND"
+                    })
+              } else {
+                    dispatcher.dispatch({
                   type:"NEW_SEARCH",
                   data:response.data
-              }))
-          .catch(error => dispatcher.dispatch({
+              })}
+                    
+                })
+          .catch(error => {
+              dispatcher.dispatch({
                 type:"SEARCH_ERROR"
-            }));
+            })
+              
+          });
     };
     
 }

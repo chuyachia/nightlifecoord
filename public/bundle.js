@@ -46561,7 +46561,8 @@ var Welcome = function (_React$Component) {
 
     _this.getData = _this.getData.bind(_this);
     _this.throwError = _this.throwError.bind(_this);
-    _this.state = { term: '', data: {}, error: false, disabled: true };
+    _this.notFound = _this.notFound.bind(_this);
+    _this.state = { term: '', data: {}, error: false, disabled: true, notfound: false };
     return _this;
   }
 
@@ -46580,10 +46581,18 @@ var Welcome = function (_React$Component) {
       });
     }
   }, {
+    key: 'notFound',
+    value: function notFound() {
+      this.setState({
+        notfound: true
+      });
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].on("ready", this.getData);
       __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].on('searcherror', this.throwError);
+      __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].on('searchnotfound', this.notFound);
     }
   }, {
     key: 'componentDidMount',
@@ -46596,6 +46605,7 @@ var Welcome = function (_React$Component) {
       console.log('welcome will unmount');
       __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].removeListener("ready", this.getData);
       __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].removeListener('searcherror', this.throwError);
+      __WEBPACK_IMPORTED_MODULE_2__stores_WelcomeStore_js__["a" /* default */].removeListener('searchnotfound', this.notFound);
     }
   }, {
     key: 'render',
@@ -46604,7 +46614,7 @@ var Welcome = function (_React$Component) {
         'div',
         { className: 'center', __source: {
             fileName: _jsxFileName,
-            lineNumber: 44
+            lineNumber: 52
           },
           __self: this
         },
@@ -46613,7 +46623,7 @@ var Welcome = function (_React$Component) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 45
+              lineNumber: 53
             },
             __self: this
           },
@@ -46624,7 +46634,7 @@ var Welcome = function (_React$Component) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 46
+              lineNumber: 54
             },
             __self: this
           },
@@ -46632,7 +46642,7 @@ var Welcome = function (_React$Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_Searchbar_js__["a" /* default */], { nav: false, collapse: null, disabled: this.state.disabled, __source: {
             fileName: _jsxFileName,
-            lineNumber: 47
+            lineNumber: 55
           },
           __self: this
         }),
@@ -46641,11 +46651,22 @@ var Welcome = function (_React$Component) {
           {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 48
+              lineNumber: 56
             },
             __self: this
           },
           'Oups, something went wrong. I can\'t get the search results. Please come back later.'
+        ),
+        this.state.notfound && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'span',
+          {
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 57
+            },
+            __self: this
+          },
+          'Can\'t find data with the specified location. Please try another location.'
         ),
         this.state.data.businesses && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["c" /* Redirect */], { to: {
             pathname: '/results',
@@ -46656,14 +46677,14 @@ var Welcome = function (_React$Component) {
             }
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 50
+            lineNumber: 59
           },
           __self: this
         }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Footer_js__["a" /* default */], {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 59
+            lineNumber: 68
           },
           __self: this
         })
@@ -46718,15 +46739,18 @@ var WelcomeStore = function (_EventEmitter) {
             switch (action.type) {
                 case "NEW_SEARCH":
                     {
-                        console.log('Welcome store received data');
                         this.data = action.data;
                         this.emit("ready");
                         break;
                     }
                 case "SEARCH_ERROR":
                     {
-                        console.log('Welcome store received error');
                         this.emit("searcherror");
+                        break;
+                    }
+                case "SEARCH_NOT_FOUND":
+                    {
+                        this.emit("searchnotfound");
                         break;
                     }
             }
@@ -47010,14 +47034,18 @@ __webpack_require__(68).polyfill();
 function searchActions() {
     this.getSearchResults = function (term) {
         __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/search/' + term).then(function (response) {
-            return response.data.error ? __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
-                type: "SEARCH_ERROR"
-            }) : __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
-                type: "NEW_SEARCH",
-                data: response.data
-            });
+            if (response.data.error) {
+                __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+                    type: "SEARCH_NOT_FOUND"
+                });
+            } else {
+                __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+                    type: "NEW_SEARCH",
+                    data: response.data
+                });
+            }
         }).catch(function (error) {
-            return __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
+            __WEBPACK_IMPORTED_MODULE_0__dispatcher_js__["a" /* default */].dispatch({
                 type: "SEARCH_ERROR"
             });
         });
