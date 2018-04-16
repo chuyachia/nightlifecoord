@@ -14,7 +14,6 @@ class MapStore extends EventEmitter {
     handleActions(action) {
         switch(action.type) {
         case "ZOOM": {
-            console.log('Map store received data');
             this.zoom = action.data;
             this.emit("zoom");
             break;

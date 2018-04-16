@@ -30,10 +30,14 @@ class Modal extends React.Component{
     render(){
         var modalStyles = {overlay: {zIndex: 10}};
         var reviewlist =[];
-        this.state.reviews.forEach(function(review,indx){
-        reviewlist.push(<blockquote key={indx}><p>{review.text}</p><span><a href={review.url} target='_blank'>Read more</a></span>
-                        <footer>{review.user.name}<cite>{review.time_created}</cite></footer></blockquote>);
-        });
+        if(this.state.reviews.length>0){
+            this.state.reviews.forEach(function(review,indx){
+            reviewlist.push(<blockquote key={indx}><p>{review.text}</p><span><a href={review.url} target='_blank'>Read more</a></span>
+                            <footer>{review.user.name}<cite>{review.time_created}</cite></footer></blockquote>);
+            });
+        } else {
+             reviewlist.push(<p key="0">No review to show...</p>)
+        }
         return(
         <ReactModal style={modalStyles}
            isOpen={this.state.open}

@@ -4,14 +4,39 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Searchbar from './Searchbar';
 import Action from '../actions/NavbarAction.js';
+import NavbarStore from '../stores/NavbarStore.js';
+
 
 class Navbar extends React.Component {
     constructor(){
       super();
+      this.enable = this.enable.bind(this);
       this.state = {
+        disabled:false,
         collapsed:true,
       };
     }
+    componentWillMount() {
+        NavbarStore.on('newdata',this.enable);
+        NavbarStore.on('searcherror',this.enable);
+        NavbarStore.on('searchnotfound',this.enable);
+    }
+    componentWillUnmount() {
+        NavbarStore.removeListener('newdata',this.enable);
+        NavbarStore.removeListener('searcherror',this.enable);
+        NavbarStore.removeListener('searchnotfound',this.enable);
+    }
+    disableFunc(){
+      this.setState({
+        disabled:true
+      })
+    }
+    enable(){
+      this.setState({
+        disabled:false
+      });
+    }
+
     getOwnGoing(){
         Action.getOwnGoing();
     }
@@ -36,10 +61,10 @@ class Navbar extends React.Component {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                    <Link class="navbar-brand" to="/">Nightlife Coordination App</Link>
+                    <div class="navbar-brand">Nightlife Coordination App</div>
                 </div>
                 <div class={"navbar-collapse "+navClass}  id="navbarColor01">
-                <Searchbar nav={true} collapse={this.collapse.bind(this)}/>
+                <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
                 <ul class="nav navbar-nav navbar-right">
                     <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
                         <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>

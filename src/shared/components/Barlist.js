@@ -59,7 +59,10 @@ class Barlist extends React.Component{
         switch(criteria){
             case 'price':{
                 var order = this.state.priceicon%2+1==1?'asc':'desc';
-                var businesses = orderBy(this.state.businesses,function(bar) { return bar.price.length;},order);
+                var businesses = orderBy(this.state.businesses,function(bar) {
+                    var len = bar.price? bar.price.length:0; 
+                    return len;
+                },order);
                 this.setState({
                     businesses:businesses,
                     priceicon:this.state.priceicon%2+1,

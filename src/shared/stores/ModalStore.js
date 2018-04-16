@@ -14,7 +14,6 @@ class ModalStore extends EventEmitter {
     handleActions(action) {
         switch(action.type) {
           case "REVIEW": {
-            console.log('Modallist store received data');
             this.data = action.data;
             this.name = action.name;
             this.emit("change");

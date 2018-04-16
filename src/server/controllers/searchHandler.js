@@ -53,7 +53,7 @@ function searchHandler(){
 
   
   this.getSearch = function(req,res,next){
-    cache.put('lastsearch', req.params.location);  
+    
     var getParams = querystring.stringify({
         location:req.params.location,
         categories:'bars,music',
@@ -92,6 +92,7 @@ function searchHandler(){
                 });
               responseObject.togo= res.locals.owngoing;
               res.locals.response = responseObject;
+              cache.put('lastsearch', req.params.location);  
               next();
             }
           else{
