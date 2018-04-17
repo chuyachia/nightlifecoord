@@ -85,6 +85,9 @@ function returnHtml(req,res){
         <StaticRouter location={req.url} context={context}>
           <App />
         </StaticRouter>);
+      if (matchPath(req.url,routes).path!=req.url)
+        res.status(404);
+        
       res.send(`
       <!DOCTYPE html>
       <html>

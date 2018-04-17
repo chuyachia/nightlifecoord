@@ -1,5 +1,6 @@
 import Welcome from "./welcome/Welcome";
 import Results from "./results/Results";
+import Notfound from "./notfound/Notfound";
 
 
 const routes = [
@@ -14,7 +15,7 @@ const routes = [
   },
   {
     path:"*",
-    component: null
+    component: Notfound
   }
 ];
 
