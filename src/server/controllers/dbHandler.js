@@ -7,7 +7,9 @@ function dbHandler(){
     if (req.isAuthenticated()) {
       Users.findOne({'github.id':req.user.github.id},{'places':1})
       .exec(function(err,result){
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+        }
         res.locals.owngoing = result['places']
         next()
       })} else {
@@ -24,7 +26,9 @@ function dbHandler(){
                            {_id:"$places.id",
                            count:{$sum:1}}}])
     .exec(function(err,result){
-      if (err) throw err;
+        if (err) {
+          console.log(err);
+        }
       result.forEach(function(x){
         count_dict[x._id] = x.count;
       });
@@ -40,7 +44,9 @@ function dbHandler(){
     }},
     {new:true})
     .exec(function(err,result){
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+        }
         console.log('New place added');
         res.json(result)
       })
@@ -53,7 +59,9 @@ function dbHandler(){
         }},
         {new:true})
     .exec(function(err,result){
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+        }
         console.log('Place removed');
         res.json(result)
       })

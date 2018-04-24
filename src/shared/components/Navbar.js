@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import {Link} from 'react-router-dom';
 import Searchbar from './Searchbar';
 import Action from '../actions/NavbarAction.js';
 import NavbarStore from '../stores/NavbarStore.js';
@@ -11,20 +10,24 @@ class Navbar extends React.Component {
     constructor(){
       super();
       this.enable = this.enable.bind(this);
+      this.throwError = this.throwError.bind(this);
+      this.notFound = this.notFound.bind(this);
       this.state = {
         disabled:false,
         collapsed:true,
+        error:false,
+        notfound:false
       };
     }
     componentWillMount() {
         NavbarStore.on('newdata',this.enable);
-        NavbarStore.on('searcherror',this.enable);
-        NavbarStore.on('searchnotfound',this.enable);
+        NavbarStore.on('searcherror',this.throwError);
+        NavbarStore.on('searchnotfound',this.notFound);
     }
     componentWillUnmount() {
         NavbarStore.removeListener('newdata',this.enable);
-        NavbarStore.removeListener('searcherror',this.enable);
-        NavbarStore.removeListener('searchnotfound',this.enable);
+        NavbarStore.removeListener('searcherror',this.throwError);
+        NavbarStore.removeListener('searchnotfound',this.notFound);
     }
     disableFunc(){
       this.setState({
@@ -33,6 +36,20 @@ class Navbar extends React.Component {
     }
     enable(){
       this.setState({
+        disabled:false
+      });
+    }
+    throwError(){
+      this.setState({
+        notfound:false,
+        error:true,
+        disabled:false
+      });
+    }
+    notFound(){
+      this.setState({
+        notfound:true,
+        error:false,
         disabled:false
       });
     }
@@ -64,18 +81,18 @@ class Navbar extends React.Component {
                     <div class="navbar-brand">Nightlife Coordination App</div>
                 </div>
                 <div class={"navbar-collapse "+navClass}  id="navbarColor01">
-                <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
-                        <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
-                    }</li>
-                    {this.props.loggedin?<li>
-                    <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/>My Profile</a>
-                    </li>:null}
-                    <li>
-                        <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/nightlifecoord" target="_blank"><i class="fas fa-code"/></a>
-                    </li>
-                </ul>
+                    <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
+                            <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
+                        }</li>
+                        {this.props.loggedin?<li>
+                        <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/>My Profile</a>
+                        </li>:null}
+                        <li>
+                            <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/nightlifecoord" target="_blank"><i class="fas fa-code"/></a>
+                        </li>
+                    </ul>
                 </div>
               </div>
             </nav>  

@@ -16,14 +16,6 @@ class WelcomeStore extends EventEmitter {
             this.emit("ready");
             break;
           }
-           case "SEARCH_ERROR": {
-            this.emit("searcherror");
-            break;
-          }
-         case "SEARCH_NOT_FOUND": {
-            this.emit("searchnotfound");
-            break;
-          }
         }
     }
 }
