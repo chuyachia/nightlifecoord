@@ -28,6 +28,7 @@
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "react": "^15.6.1",
+    "react-dock": "^0.2.4",
     "react-dom": "^15.6.1",
     "react-leaflet": "^1.8.1",
     "react-modal": "^3.3.1",

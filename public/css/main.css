@@ -1,7 +1,7 @@
 
 .resultlist{
-    overflow:auto;
-    height:90vh;
+  position:relative;
+  margin-left:10px;
 }
 .result{
     margin-top:20px;
@@ -58,3 +58,4 @@
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
 }
+/*# sourceMappingURL=main.css.map*/

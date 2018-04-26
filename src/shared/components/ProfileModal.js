@@ -35,8 +35,7 @@ class ProfileModal extends React.Component{
     removeToGo(id,name,country,city){
         Action.removeToGo(id,name,country,city);
     }
-    
-    
+
     close(){
         this.setState({open:false});
     }
