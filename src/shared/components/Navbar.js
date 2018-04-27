@@ -81,8 +81,10 @@ class Navbar extends React.Component {
                     <div class="navbar-brand" onClick={this.props.showsidepane}><i class="fas fa-angle-right fa-lg"></i>&nbsp;Nightlife Coordination App</div>
                 </div>
                 <div class={"navbar-collapse "+navClass}  id="navbarColor01">
-                    <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
                     <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
+                        </li>
                         <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
                             <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
                         }</li>
