@@ -90,10 +90,10 @@ class Searchbar extends React.Component{
                   </button> 
                 </span>
               </div>
+                {this.state.error&& <small class="form-text text-muted">Oops, something went wrong. I can't get the search results. Please come back later.</small>}
+                {this.state.notfound && <small class="form-text text-muted">No data found with the specified location. Please try another location.</small>}
             </form>
-            {this.state.error&& <small class="form-text text-muted">Oops, something went wrong. I can't get the search results. Please come back later.</small>}
-            {this.state.notfound && <small class="form-text text-muted">No data found with the specified location. Please try another location.</small>}
-          </div>
+           </div>
         );
     }
 }

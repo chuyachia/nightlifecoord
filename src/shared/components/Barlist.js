@@ -89,6 +89,7 @@ class Barlist extends React.Component{
         <span style={{float:'right'}}>
         Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
         Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span></span>
+            {this.state.businesses.length==0&&(<p>Nothing to show...</p>)}
             {this.state.businesses.map((bar,indx) => {
                 return <Bar key = {indx} seq={indx} id ={bar.id} 
                 image_url={bar.image_url} name={bar.name} 
