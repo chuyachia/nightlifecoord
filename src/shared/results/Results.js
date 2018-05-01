@@ -67,7 +67,8 @@ class Results extends React.Component{
             <ProfileModal/>
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin} showsidepane={this.showHide.bind(this)}/>
-                    <Dock isVisible={this.state.showSidepane} dimMode="none" zIndex={5} fluid={true}>
+                    <Dock isVisible={this.state.showSidepane} dimMode="none" zIndex={5} fluid={true}
+                    defaultSize={window.innerWidth>=600?0.3:1}>
                         <nav class="navbar navbar-default">
                                 <div class="container-fluid">
                                     <div class="navbar-header">

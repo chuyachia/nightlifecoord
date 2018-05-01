@@ -92,6 +92,7 @@ function returnHtml(req,res){
       <!DOCTYPE html>
       <html>
         <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
           <title>Nightlife Coordination App</title>
           <link rel="stylesheet" href="https://bootswatch.com/3/journal/bootstrap.min.css">
           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
