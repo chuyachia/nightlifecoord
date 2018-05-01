@@ -32,7 +32,8 @@ class Results extends React.Component{
             togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
             region:this.props.location.state?this.props.location.state.region:initialData.region,
             loggedin:loggedIn,
-            showSidepane:true
+            showSidepane:true,
+            dockWidth:null
         };
     }
     showHide(){
@@ -57,7 +58,7 @@ class Results extends React.Component{
         ResultsStore.on("newplace", this.getToGo.bind(this));
     }
     componentDidMount(){
-        this.dockWidth = window.innerWidth>=600?0.3:1;
+        this.setState({dockWidth:window.innerWidth>=600?0.3:1});
     }
     componentWillUnmount() {
         ResultsStore.removeListener("newdata", this.getData.bind(this));
@@ -65,13 +66,14 @@ class Results extends React.Component{
     }
     render(){
         return(
+        this.state.dockWidth?(
         <div class='container-fluid'>
             <Modal/>
             <ProfileModal/>
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin} showsidepane={this.showHide.bind(this)}/>
                     <Dock isVisible={this.state.showSidepane} dimMode="none" zIndex={5} fluid={true}
-                    defaultSize={this.dockWidth}>
+                    defaultSize={this.state.dockWidth}>
                         <nav class="navbar navbar-default" style={{position:"absolute",right: "15px",left:"0px",zIndex:3}}>
                                 <div class="container-fluid">
                                     <div class="navbar-header">
@@ -88,7 +90,8 @@ class Results extends React.Component{
                     <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
                     <Footer/>
                 </div>
-        </div>);
+        </div>):(null)
+        );
     }
 }
 
