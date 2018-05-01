@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import ResultsStore from '../stores/ResultsStore.js';
 import Dock from "react-dock";
+import MediaQuery from 'react-responsive';
 import "./Results.css";
 
 
@@ -55,7 +56,9 @@ class Results extends React.Component{
         ResultsStore.on("newdata", this.getData.bind(this));
         ResultsStore.on("newplace", this.getToGo.bind(this));
     }
-
+    componentDidMount(){
+        this.dockWidth = window.innerWidth>=600?0.3:1;
+    }
     componentWillUnmount() {
         ResultsStore.removeListener("newdata", this.getData.bind(this));
         ResultsStore.removeListener("newplace", this.getToGo.bind(this));
@@ -68,8 +71,8 @@ class Results extends React.Component{
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin} showsidepane={this.showHide.bind(this)}/>
                     <Dock isVisible={this.state.showSidepane} dimMode="none" zIndex={5} fluid={true}
-                    defaultSize={window.innerWidth>=600?0.3:1}>
-                        <nav class="navbar navbar-default">
+                    defaultSize={this.dockWidth}>
+                        <nav class="navbar navbar-default" style={{position:"absolute",right: "15px",left:"0px",zIndex:3}}>
                                 <div class="container-fluid">
                                     <div class="navbar-header">
                                         <div class="navbar-brand" onClick={this.showHide.bind(this)}>

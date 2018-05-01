@@ -78,7 +78,7 @@ class Navbar extends React.Component {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                    <div class="navbar-brand" onClick={this.props.showsidepane}><i class="fas fa-angle-right fa-lg"></i>&nbsp;Nightlife Coordination App</div>
+                    <div class="navbar-brand" onClick={this.props.showsidepane}>Nightlife Coordination App&nbsp;<i class="fas fa-angle-right fa-lg"></i></div>
                 </div>
                 <div class={"navbar-collapse "+navClass}  id="navbarColor01">
                     <ul class="nav navbar-nav navbar-right">
