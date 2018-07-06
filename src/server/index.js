@@ -94,7 +94,7 @@ function returnHtml(req,res){
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <title>Nightlife Coordination App</title>
-          <link rel="stylesheet" href="https://bootswatch.com/3/journal/bootstrap.min.css">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/journal/bootstrap.min.css">
           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
           <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
           <link rel="stylesheet" href="/css/main.css">
