@@ -8,8 +8,6 @@ import ProfileModal from '../components/ProfileModal.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import ResultsStore from '../stores/ResultsStore.js';
-import Dock from "react-dock";
-import MediaQuery from 'react-responsive';
 import "./Results.css";
 
 
@@ -32,8 +30,7 @@ class Results extends React.Component{
             togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
             region:this.props.location.state?this.props.location.state.region:initialData.region,
             loggedin:loggedIn,
-            showSidepane:true,
-            dockWidth:null
+            showSidepane:true
         };
     }
     showHide(){
@@ -57,40 +54,34 @@ class Results extends React.Component{
         ResultsStore.on("newdata", this.getData.bind(this));
         ResultsStore.on("newplace", this.getToGo.bind(this));
     }
-    componentDidMount(){
-        this.setState({dockWidth:window.innerWidth>=600?0.3:1});
-    }
     componentWillUnmount() {
         ResultsStore.removeListener("newdata", this.getData.bind(this));
         ResultsStore.removeListener("newplace", this.getToGo.bind(this));
     }
     render(){
         return(
-        this.state.dockWidth?(
         <div class='container-fluid'>
             <Modal/>
             <ProfileModal/>
                 <div class="row">
-                    <Navbar loggedin ={this.state.loggedin} showsidepane={this.showHide.bind(this)}/>
-                    <Dock isVisible={this.state.showSidepane} dimMode="none" zIndex={5} fluid={true}
-                    defaultSize={this.state.dockWidth}>
-                        <nav class="navbar navbar-default" style={{position:"absolute",right: "15px",left:"0px",zIndex:3}}>
-                                <div class="container-fluid">
-                                    <div class="navbar-header">
-                                        <div class="navbar-brand" onClick={this.showHide.bind(this)}>
-                                            <i class="fas fa-angle-left"></i>&nbsp;Nightlife Coordination App
-                                        </div>
-                                    </div>
+                    <Navbar loggedin ={this.state.loggedin}/>
+                    <div class={`sidebar ${this.state.showSidepane?'':'nowidth'}`}>
+                        <div class="sidebar-pane">
+                            <div class={`resultlist ${this.state.showSidepane?'':'hidden'}`}>
+                                <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo} hidesidepane={this.showHide.bind(this)}/>
                             </div>
-                        </nav>
-                        <div class="resultlist">
-                            <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo} hidesidepane={this.showHide.bind(this)}/>
                         </div>
-                    </Dock>
+                        <div class="sidebar-btn" onClick={this.showHide.bind(this)}>
+                        {this.state.showSidepane?
+                        <i class="fas fa-caret-left"></i>:
+                        <i class="fas fa-caret-right"></i>
+                        }
+                        </div>
+                    </div>
                     <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
                     <Footer/>
                 </div>
-        </div>):(null)
+        </div>
         );
     }
 }

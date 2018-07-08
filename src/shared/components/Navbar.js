@@ -66,8 +66,6 @@ class Navbar extends React.Component {
           this.setState({collapsed:true});
     }
      render(){
-
-       const navClass = this.state.collapsed ? "collapse" : "";
          return(
            <nav class="navbar navbar-default">
              <div class="container-fluid">
@@ -78,9 +76,9 @@ class Navbar extends React.Component {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                       </button>
-                    <div class="navbar-brand" onClick={this.props.showsidepane}>Nightlife Coordination App&nbsp;<i class="fas fa-angle-right fa-lg"></i></div>
+                    <div class="navbar-brand">Nightlife Coordination App</div>
                 </div>
-                <div class={"navbar-collapse "+navClass}  id="navbarColor01">
+                <div class={`navbar-collapse ${this.state.collapsed?'collapse':''}`}  id="navbarColor01">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                         <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
