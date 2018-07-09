@@ -32,7 +32,7 @@ class Navbar extends React.Component {
     disableFunc(){
       this.setState({
         disabled:true
-      })
+      });
     }
     enable(){
       this.setState({

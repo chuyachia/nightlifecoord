@@ -7,18 +7,22 @@ class SearchBarStore extends EventEmitter {
     }
     handleActions(action) {
         switch(action.type) {
-         case "NEW_SEARCH": {
-            this.emit("ready");
-            break;
-          }
-           case "SEARCH_ERROR": {
-            this.emit("searcherror");
-            break;
-          }
-         case "SEARCH_NOT_FOUND": {
-            this.emit("searchnotfound");
-            break;
-          }
+            case "SEARCH_START" :{
+                this.emit('searchstart');
+                break;
+            }
+            case "NEW_SEARCH": {
+                this.emit("ready");
+                break;
+            }
+            case "SEARCH_ERROR": {
+                this.emit("searcherror");
+                break;
+            }
+            case "SEARCH_NOT_FOUND": {
+                this.emit("searchnotfound");
+                break;
+            }
         }
     }
 }

@@ -14,6 +14,11 @@ import "./Results.css";
 class Results extends React.Component{
     constructor(props){
         super(props);
+        this.showLoading=this.showLoading.bind(this);
+        this.removeLoading=this.removeLoading.bind(this);
+        this.removeLoading=this.removeLoading.bind(this);
+        this.getData=this.getData.bind(this);
+        this.getToGo=this.getToGo.bind(this);
         let initialData;
         let loggedIn;
         if (typeof window !== 'undefined') {
@@ -30,18 +35,30 @@ class Results extends React.Component{
             togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
             region:this.props.location.state?this.props.location.state.region:initialData.region,
             loggedin:loggedIn,
-            showSidepane:true
+            showSidepane:true,
+            loading:false
         };
+    }
+    showLoading(){
+      this.setState({
+        loading:true
+      });
+    }
+    removeLoading(){
+      this.setState({
+        loading:false
+      });
     }
     showHide(){
         this.setState({showSidepane:this.state.showSidepane?false:true});
     }
-     getData() {
+    getData() {
         var data = ResultsStore.getAll();
         this.setState({
           businesses:data.businesses,
           togo :data.togo,
-          region:data.region
+          region:data.region,
+          loading:false
         });
     }
     getToGo(){
@@ -51,12 +68,18 @@ class Results extends React.Component{
         });
     }
     componentWillMount() {
-        ResultsStore.on("newdata", this.getData.bind(this));
-        ResultsStore.on("newplace", this.getToGo.bind(this));
+        ResultsStore.on("searchstart", this.showLoading);
+        ResultsStore.on("searcherror", this.removeLoading);
+        ResultsStore.on("searchnotfound", this.removeLoading);
+        ResultsStore.on("newdata", this.getData);
+        ResultsStore.on("newplace", this.getToGo);
     }
     componentWillUnmount() {
-        ResultsStore.removeListener("newdata", this.getData.bind(this));
-        ResultsStore.removeListener("newplace", this.getToGo.bind(this));
+        ResultsStore.removeListener("searchstart", this.showLoading);
+        ResultsStore.removeListener("searcherror", this.removeLoading);
+        ResultsStore.removeListener("searchnotfound", this.removeLoading);
+        ResultsStore.removeListener("newdata", this.getData);
+        ResultsStore.removeListener("newplace", this.getToGo);
     }
     render(){
         return(
@@ -78,6 +101,7 @@ class Results extends React.Component{
                         }
                         </div>
                     </div>
+                    <div class={`overlay ${this.state.loading?'':'hidden'}`}><i class="fas fa-spinner fa-pulse fa-5x"></i></div>
                     <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
                     <Footer/>
                 </div>

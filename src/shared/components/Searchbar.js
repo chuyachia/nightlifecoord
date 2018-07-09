@@ -8,6 +8,7 @@ import SearchBarStore from '../stores/SearchBarStore.js';
 class Searchbar extends React.Component{
     constructor(){
         super();
+        this.showLoading = this.showLoading.bind(this);
         this.throwError = this.throwError.bind(this);
         this.notFound = this.notFound.bind(this);
         this.removeLoading = this.removeLoading.bind(this);
@@ -20,6 +21,7 @@ class Searchbar extends React.Component{
         };
     }
     componentWillMount(){
+        SearchBarStore.on("searchstart", this.showLoading);
         SearchBarStore.on("ready", this.removeLoading);
         SearchBarStore.on('searcherror',this.throwError);
         SearchBarStore.on('searchnotfound',this.notFound);
@@ -28,7 +30,8 @@ class Searchbar extends React.Component{
       this.setState({disabled:false});
     }
     componentWillUnmount() {
-       SearchBarStore.removeListener("ready", this.removeLoading);
+        SearchBarStore.removeListener("searchstart", this.showLoading);
+        SearchBarStore.removeListener("ready", this.removeLoading);
         SearchBarStore.removeListener('searcherror',this.throwError);
         SearchBarStore.removeListener('searchnotfound',this.notFound);
     }
@@ -37,17 +40,23 @@ class Searchbar extends React.Component{
           this.setState({
             error:false,
             notfound:false
-          })
+          });
         }
     }
     addSearchTerm(event){
         this.setState({term: event.target.value});
     }
+    showLoading(){
+      this.setState({
+        loading:true,
+        disabled:true
+      });
+    }
     removeLoading(){
       this.setState({
         loading:false,
         disabled:false
-      })
+      });
     }
     throwError(){
       this.setState({
@@ -67,10 +76,6 @@ class Searchbar extends React.Component{
     }
     submitSearch(event){
         event.preventDefault();
-        this.setState({
-          disabled:true,
-          loading:true
-        })
         if (this.props.collapse)
         this.props.collapse();
         Action.getSearchResults(this.state.term);

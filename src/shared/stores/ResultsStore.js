@@ -17,28 +17,40 @@ class ResultsStore extends EventEmitter {
     }
     handleActions(action) {
         switch(action.type) {
-        case "NEW_SEARCH": {
-            this.businesses = action.data.businesses;
-            this.togo= action.data.togo;
-            this.region = action.data.region;
-            this.emit("newdata");
-            break;
-          }
-          case "ADD_PLACE": {
-            this.togo= action.togo;
-            this.emit("newplace");
-            break;
-          }
-        case "REMOVE_PLACE": {
-            this.togo= action.togo;
-            this.emit("newplace");
-            break;
-          }
-          case "REMOVE_PLACE_PROFILE": {
-            this.togo= action.togo;
-            this.emit("newplace");
-            break;
-          }
+            case "SEARCH_START" :{
+                this.emit('searchstart');
+                break;
+            }
+            case "NEW_SEARCH": {
+                this.businesses = action.data.businesses;
+                this.togo= action.data.togo;
+                this.region = action.data.region;
+                this.emit("newdata");
+                break;
+            }
+            case "SEARCH_ERROR": {
+                this.emit("searcherror");
+                break;
+            }
+            case "SEARCH_NOT_FOUND": {
+                this.emit("searchnotfound");
+                break;
+            }
+            case "ADD_PLACE": {
+                this.togo= action.togo;
+                this.emit("newplace");
+                break;
+            }
+            case "REMOVE_PLACE": {
+                this.togo= action.togo;
+                this.emit("newplace");
+                break;
+            }
+            case "REMOVE_PLACE_PROFILE": {
+                this.togo= action.togo;
+                this.emit("newplace");
+                break;
+            }
         }
     }
 }
