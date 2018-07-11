@@ -16,7 +16,7 @@ class Leafletmap extends React.Component{
       this.mapInstance.leafletElement.flyTo([coord.latitude,coord.longitude], 18);
     }
     focusOnList(id){
-      window.location.hash = '#'+id;
+      Action.scrollTo(id);
     }
     componentWillMount() {
         MapStore.on("zoom",this.flyTo.bind(this));
@@ -45,10 +45,12 @@ class Leafletmap extends React.Component{
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
           {this.props.markers.map((marker,indx) => {
             return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
-            sytle={{zIndex:5}} onClick={() => this.focusOnList(marker.id)}>
-            <Popup><span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
-            {marker.phone}</span></Popup>
-            <Tooltip><span>{marker.name}</span></Tooltip>
+              sytle={{zIndex:5}} onClick={() => Action.scrollTo(marker.id)}>
+              <Popup>
+                <span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
+                {marker.phone}</span>
+              </Popup>
+              <Tooltip><span>{marker.name}</span></Tooltip>
             </Marker>;
           })}
         </Map>

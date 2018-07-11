@@ -27,6 +27,12 @@ function barActions(){
         data:coord
         }); 
     };
+    this.scrollTo = function(id){
+       dispatcher.dispatch({
+            type:"SCROLL_TO",
+            id:id
+        });
+    };
     this.getReview = function(id,name){
         axios.get('/review/'+id)
           .then(response => dispatcher.dispatch({

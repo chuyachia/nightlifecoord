@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Bar from './Bar.js';
 import BarlistStore from '../stores/BarlistStore.js';
 import orderBy from "lodash.orderby";
@@ -18,7 +19,7 @@ class Barlist extends React.Component{
         BarlistStore.on("plusone", this.plusOne.bind(this));
         BarlistStore.on("minusone", this.minusOne.bind(this));
         BarlistStore.on("minusifmatch", this.minusWhenMatch.bind(this));
-        
+        BarlistStore.on("scrollto", this.scrollTo.bind(this));
     }
 
     componentWillUnmount() {
@@ -26,6 +27,12 @@ class Barlist extends React.Component{
         BarlistStore.removeListener("plusone", this.plusOne.bind(this));
         BarlistStore.removeListener("minusone", this.minusOne.bind(this));
         BarlistStore.removeListener("minusifmatch", this.minusWhenMatch.bind(this));
+        BarlistStore.removeListener("scrollto", this.scrollTo.bind(this));
+    }
+    scrollTo(id){
+        var parent =  ReactDOM.findDOMNode(this.props.scroll);
+        var child =  ReactDOM.findDOMNode(this.refs[id]);
+        parent.scrollTop = child.offsetTop;
     }
     getNewData(businesses){
         this.setState({
@@ -85,13 +92,15 @@ class Barlist extends React.Component{
     render(){
         var togo = this.props.togo.map(bar => bar.id);
         return(
-        <div><h5>Sort by
-        <span style={{float:'right'}}>
-        Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
-        Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span></span>
+        <div  ref="container">
+            <h5>Sort by
+            <span style={{float:'right'}}>
+            Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
+            Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span>
+            </span>
             {this.state.businesses.length==0&&(<p>Nothing to show...</p>)}
             {this.state.businesses.map((bar,indx) => {
-                return <Bar key = {indx} seq={indx} id ={bar.id} 
+                return <Bar key = {indx} seq={indx} id ={bar.id} ref={bar.id}
                 image_url={bar.image_url} name={bar.name} 
                 price={bar.price} categories={bar.categories}
                 going={bar.going} rating={bar.rating} review_count = {bar.review_count}
@@ -99,8 +108,9 @@ class Barlist extends React.Component{
                 lat={bar.coordinates.latitude} lon={bar.coordinates.longitude} 
                 country={bar.location.country} city={bar.location.city}
                 loggedin = {this.props.loggedin}/>;
-            })}</h5>
-            </div>);
+            })}
+            </h5>
+        </div>);
             
     }
 }

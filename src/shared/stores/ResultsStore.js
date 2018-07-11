@@ -51,6 +51,7 @@ class ResultsStore extends EventEmitter {
                 this.emit("newplace");
                 break;
             }
+            
         }
     }
 }

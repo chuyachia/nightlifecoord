@@ -7,23 +7,28 @@ class BarlistStore extends EventEmitter {
     }
     handleActions(action) {
         switch(action.type) {
-         case "NEW_SEARCH": {
-            this.emit("newdata",action.data.businesses);
-            break;
-          }
-          case "ADD_PLACE": {
-            this.emit("plusone", action.key);
-            break;
-          }
-         case "REMOVE_PLACE": {
-            this.emit("minusone", action.key);
-            break;
-          }
-        case "REMOVE_PLACE_PROFILE": {
-            this.emit("minusifmatch",action.id);
-            break;
-          }
+             case "NEW_SEARCH": {
+                this.emit("newdata",action.data.businesses);
+                break;
+              }
+              case "ADD_PLACE": {
+                this.emit("plusone", action.key);
+                break;
+              }
+             case "REMOVE_PLACE": {
+                this.emit("minusone", action.key);
+                break;
+              }
+            case "REMOVE_PLACE_PROFILE": {
+                this.emit("minusifmatch",action.id);
+                break;
+              }
+            case "SCROLL_TO": {
+                this.emit("scrollto",action.id);
+                break;
+            }
         }
+
     }
 }
 

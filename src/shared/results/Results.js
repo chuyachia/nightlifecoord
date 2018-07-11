@@ -14,11 +14,7 @@ import "./Results.css";
 class Results extends React.Component{
     constructor(props){
         super(props);
-        this.showLoading=this.showLoading.bind(this);
-        this.removeLoading=this.removeLoading.bind(this);
-        this.removeLoading=this.removeLoading.bind(this);
-        this.getData=this.getData.bind(this);
-        this.getToGo=this.getToGo.bind(this);
+
         let initialData;
         let loggedIn;
         if (typeof window !== 'undefined') {
@@ -68,18 +64,18 @@ class Results extends React.Component{
         });
     }
     componentWillMount() {
-        ResultsStore.on("searchstart", this.showLoading);
-        ResultsStore.on("searcherror", this.removeLoading);
-        ResultsStore.on("searchnotfound", this.removeLoading);
-        ResultsStore.on("newdata", this.getData);
-        ResultsStore.on("newplace", this.getToGo);
+        ResultsStore.on("searchstart", this.showLoading.bind(this));
+        ResultsStore.on("searcherror", this.removeLoading.bind(this));
+        ResultsStore.on("searchnotfound", this.removeLoading.bind(this));
+        ResultsStore.on("newdata", this.getData.bind(this));
+        ResultsStore.on("newplace", this.getToGo.bind(this));
     }
     componentWillUnmount() {
-        ResultsStore.removeListener("searchstart", this.showLoading);
-        ResultsStore.removeListener("searcherror", this.removeLoading);
-        ResultsStore.removeListener("searchnotfound", this.removeLoading);
-        ResultsStore.removeListener("newdata", this.getData);
-        ResultsStore.removeListener("newplace", this.getToGo);
+        ResultsStore.removeListener("searchstart", this.showLoading.bind(this));
+        ResultsStore.removeListener("searcherror", this.removeLoading.bind(this));
+        ResultsStore.removeListener("searchnotfound", this.removeLoading.bind(this));
+        ResultsStore.removeListener("newdata", this.getData.bind(this));
+        ResultsStore.removeListener("newplace", this.getToGo.bind(this));
     }
     render(){
         return(
@@ -89,9 +85,15 @@ class Results extends React.Component{
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin}/>
                     <div class={`sidebar ${this.state.showSidepane?'':'nowidth'}`}>
-                        <div class="sidebar-pane">
+                        <div class="sidebar-pane" ref="scroll">
                             <div class={`resultlist ${this.state.showSidepane?'':'hidden'}`}>
-                                <Barlist businesses = {this.state.businesses} loggedin ={this.state.loggedin} togo={this.state.togo} hidesidepane={this.showHide.bind(this)}/>
+                                <Barlist 
+                                    businesses = {this.state.businesses} 
+                                    loggedin ={this.state.loggedin} 
+                                    togo={this.state.togo} 
+                                    hidesidepane={this.showHide.bind(this)}
+                                    scroll = {this.refs.scroll}
+                                />
                             </div>
                         </div>
                         <div class="sidebar-btn" onClick={this.showHide.bind(this)}>
