@@ -85,14 +85,14 @@ class Results extends React.Component{
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin}/>
                     <div class={`sidebar ${this.state.showSidepane?'':'nowidth'}`}>
-                        <div class="sidebar-pane" ref="scroll">
-                            <div class={`resultlist ${this.state.showSidepane?'':'hidden'}`}>
+                        <div class="sidebar-pane" ref={e => { this.scroll = e }}>
+                            <div class="resultlist">
                                 <Barlist 
                                     businesses = {this.state.businesses} 
                                     loggedin ={this.state.loggedin} 
                                     togo={this.state.togo} 
                                     hidesidepane={this.showHide.bind(this)}
-                                    scroll = {this.refs.scroll}
+                                    scroll = {this.scroll}
                                 />
                             </div>
                         </div>

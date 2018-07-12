@@ -21,7 +21,12 @@ class Barlist extends React.Component{
         BarlistStore.on("minusifmatch", this.minusWhenMatch.bind(this));
         BarlistStore.on("scrollto", this.scrollTo.bind(this));
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.businesses!==this.props.businesses) {
+            var parent = ReactDOM.findDOMNode(this).parentNode.parentNode;
+            parent.scrollTop =0;              
+        }
+    }
     componentWillUnmount() {
         BarlistStore.removeListener("newdata", this.getNewData.bind(this));
         BarlistStore.removeListener("plusone", this.plusOne.bind(this));
@@ -30,7 +35,7 @@ class Barlist extends React.Component{
         BarlistStore.removeListener("scrollto", this.scrollTo.bind(this));
     }
     scrollTo(id){
-        var parent =  ReactDOM.findDOMNode(this.props.scroll);
+        var parent = ReactDOM.findDOMNode(this).parentNode.parentNode;
         var child =  ReactDOM.findDOMNode(this.refs[id]);
         parent.scrollTop = child.offsetTop;
     }
