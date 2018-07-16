@@ -68,7 +68,6 @@ class Navbar extends React.Component {
      render(){
          return(
            <nav class="navbar navbar-default">
-             <div class="container-fluid">
                 <div class="navbar-header">
                       <button type="button" class="navbar-toggle collapsed" onClick={this.toggleCollapse.bind(this)}>
                         <span class="sr-only">Toggle navigation</span>
@@ -83,18 +82,17 @@ class Navbar extends React.Component {
                         <li>
                         <Searchbar nav={true} collapse={this.collapse.bind(this)} disabled={this.state.disabled} disablefunc = {this.disableFunc.bind(this)}/>
                         </li>
-                        <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-in-alt"/>Log Out</a>:
-                            <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-out-alt"/>Log In</a>
+                        <li>{this.props.loggedin?<a onClick={this.collapse.bind(this)} href="/logout"><i class="fas fa-sign-out-alt"/></a>:
+                            <a onClick={this.collapse.bind(this)} href="/auth/github"><i class="fas fa-sign-in-alt"/></a>
                         }</li>
                         {this.props.loggedin?<li>
-                        <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/>My Profile</a>
+                        <a onClick={this.getOwnGoing.bind(this)} style={{cursor:'pointer'}}><i class="fas fa-user"/></a>
                         </li>:null}
                         <li>
                             <a class onClick={this.collapse.bind(this)} href="https://github.com/chuyachia/nightlifecoord" target="_blank"><i class="fas fa-code"/></a>
                         </li>
                     </ul>
                 </div>
-              </div>
             </nav>  
          )
      }

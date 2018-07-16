@@ -44,7 +44,20 @@
   }
 }
 
-
+@media (max-width: 767px),(min-width: 992px) {
+  .fa-sign-in-alt::after{
+    content:' Log In';
+    font-family:"News Cycle","Arial Narrow Bold",sans-serif;
+  }
+  .fa-sign-out-alt::after{
+    content:' Log Out';
+    font-family:"News Cycle","Arial Narrow Bold",sans-serif;
+  }
+  .fa-user::after{
+    content:' My Profile';
+    font-family:"News Cycle","Arial Narrow Bold",sans-serif;
+  }
+}
 .sidebar-pane {
   float:left;
   width: calc(100% - 30px);
