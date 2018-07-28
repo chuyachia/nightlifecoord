@@ -16,8 +16,9 @@ import searchHandler from "./controllers/searchHandler";
 import dbHandler from "./controllers/dbHandler";
 import App from "../shared/App";
 import sourceMapSupport from "source-map-support";
+import memoryStoreModule from 'memorystore';
 
-
+var memoryStore = memoryStoreModule(session);
 if (process.env.NODE_ENV === "development") {
   sourceMapSupport.install();
 }
@@ -38,11 +39,17 @@ db.once('open', function() {
 });
 // Passport
 require('./config/passport.js')(passport);
+
 app.use(session({
-	secret: 'secretNightlife',
-	resave: false,
-	saveUninitialized: true
+    store: new memoryStore({
+      checkPeriod: 86400000
+    }),
+    secret: 'secretNightlife',
+    resave: false,
+    saveUninitialized: false,
+    cookie:{sameSite:'strict'}
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
