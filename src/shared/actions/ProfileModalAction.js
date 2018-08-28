@@ -6,7 +6,7 @@ function profilemodalActions(){
     this.removeToGo = function(id,name,country,city){
         axios.delete('/place/'+id+'/'+name+'/'+country+'/'+city)
         .then(response=> dispatcher.dispatch({
-            type:"REMOVE_PLACE_PROFILE",
+            type:"REMOVE_PLACE",
             togo: response.data.places,
             id:id
         }))

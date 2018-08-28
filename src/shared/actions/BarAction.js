@@ -3,20 +3,20 @@ import dispatcher from "../dispatcher.js";
 import axios from 'axios';
 
 function barActions(){
-    this.addToGo = function(id,key,name,country,city){
+    this.addToGo = function(id,name,country,city){
         axios.post('/place/'+id+'/'+name+'/'+country+'/'+city)
         .then(response=> dispatcher.dispatch({
             type:"ADD_PLACE",
-            key : key,
+            id : id,
             togo:response.data.places
         }))
         .catch(error => console.log(error));
     };
-    this.removeToGo = function(id,key,name,country,city){
+    this.removeToGo = function(id,name,country,city){
         axios.delete('/place/'+id+'/'+name+'/'+country+'/'+city)
         .then(response=> dispatcher.dispatch({
             type:"REMOVE_PLACE",
-            key : key,
+            id : id,
             togo:response.data.places
         }))
         .catch(error => console.log(error));

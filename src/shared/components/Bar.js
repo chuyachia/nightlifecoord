@@ -27,14 +27,14 @@ class Bar extends React.Component{
         Action.getReview(this.props.id,this.props.name);
     }
     addToGo(){
-        Action.addToGo(this.props.id,this.props.seq,this.props.name,this.props.country,this.props.city);
+        Action.addToGo(this.props.id,this.props.name,this.props.country,this.props.city);
         this.setState({
             addclickable:false,
             removeclickable:true
         });
     }
     removeToGo(){
-        Action.removeToGo(this.props.id,this.props.seq,this.props.name,this.props.country,this.props.city);
+        Action.removeToGo(this.props.id,this.props.name,this.props.country,this.props.city);
         this.setState({
             addclickable:true,
             removeclickable:false

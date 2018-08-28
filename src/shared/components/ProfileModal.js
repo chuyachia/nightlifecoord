@@ -15,11 +15,13 @@ class ProfileModal extends React.Component{
         };
     }
     componentWillMount() {
+        ProfileModalStore.on("openmodal", this.open.bind(this));
         ProfileModalStore.on("newdata", this.setData.bind(this));
         ProfileModalStore.on("removeplace", this.setData.bind(this));
     }
 
     componentWillUnmount() {
+        ProfileModalStore.removeListener("openmodal", this.open.bind(this));
         ProfileModalStore.removeListener("newdata", this.setData.bind(this));
         ProfileModalStore.removeListener("removeplace", this.setData.bind(this));
     }
@@ -27,7 +29,6 @@ class ProfileModal extends React.Component{
     setData(){
         var data = ProfileModalStore.getData();
         this.setState({
-            open:true,
             togo:data
         });
     }
@@ -35,7 +36,9 @@ class ProfileModal extends React.Component{
     removeToGo(id,name,country,city){
         Action.removeToGo(id,name,country,city);
     }
-
+    open(){
+        this.setState({open:true});
+    }
     close(){
         this.setState({open:false});
     }

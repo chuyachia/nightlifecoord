@@ -18,7 +18,6 @@ class Barlist extends React.Component{
         BarlistStore.on("newdata", this.getNewData.bind(this));
         BarlistStore.on("plusone", this.plusOne.bind(this));
         BarlistStore.on("minusone", this.minusOne.bind(this));
-        BarlistStore.on("minusifmatch", this.minusWhenMatch.bind(this));
         BarlistStore.on("scrollto", this.scrollTo.bind(this));
     }
     componentWillReceiveProps(nextProps) {
@@ -31,7 +30,6 @@ class Barlist extends React.Component{
         BarlistStore.removeListener("newdata", this.getNewData.bind(this));
         BarlistStore.removeListener("plusone", this.plusOne.bind(this));
         BarlistStore.removeListener("minusone", this.minusOne.bind(this));
-        BarlistStore.removeListener("minusifmatch", this.minusWhenMatch.bind(this));
         BarlistStore.removeListener("scrollto", this.scrollTo.bind(this));
     }
     scrollTo(id){
@@ -46,27 +44,29 @@ class Barlist extends React.Component{
             reviewsicon:0
         });
     }
-    plusOne(key){
-        var businesses = this.state.businesses;
-        businesses[key].going+=1;
-        this.setState({
-            businesses:businesses
-        });
-    }
-    minusOne(key){
-        var businesses = this.state.businesses;
-        businesses[key].going-=1;
-        this.setState({
-            businesses:businesses
-        });
-    }
-    minusWhenMatch(id){
-        var barids=this.state.businesses.map(bar=>bar.id);
+    plusOne(id){
+        var barids = this.state.businesses.map(bar=>bar.id);
         var matchid = barids.indexOf(id);
-        if (matchid!==-1) {
-            this.minusOne(matchid);
+        if (matchid!==-1){
+            var matched = Object.assign({},this.state.businesses[matchid],{going:this.state.businesses[matchid].going+1});
+            this.setState({
+                businesses:this.state.businesses.slice(0,matchid).concat(matched)
+                .concat(this.state.businesses.slice(matchid+1))
+            });
         }
     }
+    minusOne(id){
+        var barids = this.state.businesses.map(bar=>bar.id);
+        var matchid = barids.indexOf(id);
+        if (matchid!==-1){
+            var matched = Object.assign({},this.state.businesses[matchid],{going:this.state.businesses[matchid].going-1});
+            this.setState({
+                businesses:this.state.businesses.slice(0,matchid).concat(matched)
+                .concat(this.state.businesses.slice(matchid+1))
+            });
+        }
+    }
+
     changeOrderBy(criteria){
         switch(criteria){
             case 'price':{
@@ -104,8 +104,8 @@ class Barlist extends React.Component{
             Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span>
             </span>
             {this.state.businesses.length==0&&(<p>Nothing to show...</p>)}
-            {this.state.businesses.map((bar,indx) => {
-                return <Bar key = {indx} seq={indx} id ={bar.id} ref={bar.id}
+            {this.state.businesses.map(bar => {
+                return <Bar key={bar.id} id ={bar.id} ref={bar.id}
                 image_url={bar.image_url} name={bar.name} 
                 price={bar.price} categories={bar.categories}
                 going={bar.going} rating={bar.rating} review_count = {bar.review_count}

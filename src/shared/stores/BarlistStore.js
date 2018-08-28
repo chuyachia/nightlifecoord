@@ -12,15 +12,11 @@ class BarlistStore extends EventEmitter {
                 break;
               }
               case "ADD_PLACE": {
-                this.emit("plusone", action.key);
+                this.emit("plusone", action.id);
                 break;
               }
              case "REMOVE_PLACE": {
-                this.emit("minusone", action.key);
-                break;
-              }
-            case "REMOVE_PLACE_PROFILE": {
-                this.emit("minusifmatch",action.id);
+                this.emit("minusone", action.id);
                 break;
               }
             case "SCROLL_TO": {

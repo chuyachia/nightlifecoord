@@ -14,10 +14,11 @@ class ProfileModalStore extends EventEmitter {
         switch(action.type) {
         case "OWN_GOING": {
             this.togo = action.togo;
+            this.emit('openmodal');
             this.emit("newdata");
             break;
           }
-         case "REMOVE_PLACE_PROFILE": {
+         case "REMOVE_PLACE": {
             this.togo = action.togo;
             this.emit("removeplace");
             break;
