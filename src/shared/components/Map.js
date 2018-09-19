@@ -4,7 +4,7 @@ import React from 'react';
 import MapStore from '../stores/MapStore.js';
 import Action from '../actions/BarAction.js';
 
-let Map, TileLayer, Marker,Popup,Tooltip;
+let Map, TileLayer, Marker,Popup,Tooltip, ZoomControl;
 
 class Leafletmap extends React.Component{
     constructor(props){
@@ -30,6 +30,7 @@ class Leafletmap extends React.Component{
         Marker = require('react-leaflet').Marker;
         Popup = require('react-leaflet').Popup;
         Tooltip = require('react-leaflet').Tooltip;
+        ZoomControl = require('react-leaflet').ZoomControl;
         this.setState({packageloaded:true});
     }
     componentWillUnmount() {
@@ -39,14 +40,14 @@ class Leafletmap extends React.Component{
       return (
         this.state.packageloaded
         ? (
-          <Map center={[this.props.lat,this.props.lon]} zoom={13} class="map" ref={e => { this.mapInstance = e }}
+          <Map center={[this.props.lat,this.props.lon]} zoomControl={false} zoom={13} class="map" ref={e => { this.mapInstance = e }}
           >
           <TileLayer
           ref={e => { this.layerInstance = e }}
             attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-            {this.props.markers.map((marker,indx) => {
-              return <Marker key={indx} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
+            {this.props.markers.map(marker => {
+              return <Marker key={marker.id} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
                 sytle={{zIndex:5}} onClick={() => Action.scrollTo(marker.id)}>
                 <Popup>
                   <span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
@@ -55,6 +56,7 @@ class Leafletmap extends React.Component{
                 <Tooltip><span>{marker.name}</span></Tooltip>
               </Marker>;
             })}
+            <ZoomControl position='topright'/>
           </Map>
         )
         : (null)
