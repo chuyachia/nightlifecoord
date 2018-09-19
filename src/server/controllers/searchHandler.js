@@ -7,51 +7,6 @@ import cache from 'memory-cache';
 
 
 function searchHandler(){
-  
-  /* Oauth2 deprecated in YELP API
-  this.getToken= function(req,res,next) {
-    if(cache.get('token')) {
-      console.log('Retrieved token');
-      console.log(cache.get('token'));
-      res.locals.token = cache.get('token');
-      next();
-      
-    } else {
-      var postParams = querystring.stringify({
-        grant_type:"client_credentials",
-        client_id:  process.env.YELP_KEY,
-        client_secret:  process.env.YELP_SECRET
-      });
-      var options = {
-        host:"api.yelp.com",
-        path:"/oauth2/token?"+postParams,
-        method:"POST",
-      };
-      
-      var apireq= https.request(options, function(apires) {
-        apires.setEncoding('utf8');
-        var responseString = '';
-        apires.on('data', function(data) {
-          responseString += data;
-        });
-        
-        apires.on('end',function(){
-          var responseObject = JSON.parse(responseString);
-          cache.put('token', responseObject);
-          res.locals.token = responseObject;
-          console.log('Get new token');
-          console.log(responseObject);
-          next();
-        });
-        
-      });
-      apireq.write(postParams);
-      apireq.end();
-      
-    } 
-  };*/
-
-  
   this.getSearch = function(req,res,next){
     
     var getParams = querystring.stringify({
@@ -92,7 +47,7 @@ function searchHandler(){
                 });
               responseObject.togo= res.locals.owngoing;
               res.locals.response = responseObject;
-              cache.put('lastsearch', req.params.location);  
+              req.session.lastsearch= req.params.location;  
               next();
             }
           else{

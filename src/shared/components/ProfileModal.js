@@ -43,9 +43,8 @@ class ProfileModal extends React.Component{
         this.setState({open:false});
     }
     render(){
-        var modalStyles = {overlay: {zIndex: 10}};
         return(
-        <ReactModal style={modalStyles}
+        <ReactModal style={{overlay: {zIndex: 10}}}
            isOpen={this.state.open}
            ariaHideApp={false}
            contentLabel="Review Modal">

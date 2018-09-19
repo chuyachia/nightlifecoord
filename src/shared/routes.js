@@ -11,6 +11,7 @@ const routes = [
   },
   {
     path: "/results",
+    exact:true,
     component: Results
   },
   {

@@ -27,9 +27,9 @@ class Results extends React.Component{
             loggedIn = this.props.staticContext.loggedIn;
         }
         this.state={
-            businesses:this.props.location.state?this.props.location.state.businesses:initialData.businesses,
-            togo:this.props.location.state?this.props.location.state.togo:initialData.togo,
-            region:this.props.location.state?this.props.location.state.region:initialData.region,
+            businesses:initialData?initialData.businesses:this.props.location.state.businesses,
+            togo:initialData?initialData.togo.map(bar => bar.id):this.props.location.state.togo.map(bar => bar.id),
+            region:initialData?initialData.region:this.props.location.state.region,
             loggedin:loggedIn,
             showSidepane:true,
             loading:false
@@ -51,8 +51,9 @@ class Results extends React.Component{
     getData() {
         var data = ResultsStore.getAll();
         this.setState({
+          term:data.term,
           businesses:data.businesses,
-          togo :data.togo,
+          togo :data.togo.map(bar => bar.id),
           region:data.region,
           loading:false
         });
@@ -60,7 +61,7 @@ class Results extends React.Component{
     getToGo(){
         var data = ResultsStore.getToGo();
         this.setState({
-          togo :data
+          togo :data.map(bar => bar.id)
         });
     }
     componentWillMount() {

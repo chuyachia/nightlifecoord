@@ -7,8 +7,8 @@ import Button from './Button.js';
 
 
 class Bar extends React.Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state={
             addclickable:true,
             removeclickable:true

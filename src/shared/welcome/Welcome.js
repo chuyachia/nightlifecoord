@@ -28,22 +28,22 @@ class Welcome extends React.Component {
     }
     render(){
         return(
-    <div class="center">
-      <h1>Fancy a drink tonight?</h1>
-      <h2>Search for bars in your area and see where everyone else is going</h2>
-      <Searchbar nav={false} collapse={null} />
-        {this.state.data.businesses &&
-          <Redirect to={{
-            pathname: '/results',
-            state: { 
-              businesses: this.state.data.businesses,
-              togo:this.state.data.togo,
-              region: this.state.data.region
+        <div class="center">
+          <h1>Fancy a drink tonight?</h1>
+          <h2>Search for bars in your area and see where everyone else is going</h2>
+          <Searchbar nav={false} collapse={null} />
+            {this.state.data.businesses &&
+              <Redirect to={{
+                pathname: '/results',
+                state: {
+                  businesses: this.state.data.businesses,
+                  togo:this.state.data.togo,
+                  region: this.state.data.region
+                }
+              }}/>
             }
-          }}/>
-        }
-        <Footer/>
-    </div>
+            <Footer/>
+        </div>
     );
     }
 }

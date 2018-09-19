@@ -92,8 +92,8 @@ function returnHtml(req,res){
         <StaticRouter location={req.url} context={context}>
           <App />
         </StaticRouter>);
-      if (matchPath(req.url,routes).path!=req.url)
-        res.status(404);
+      /*if (matchPath(req.url,routes).path!=req.url)
+        res.status(404);*/
         
       res.send(`
       <!DOCTYPE html>
@@ -145,7 +145,7 @@ app.get("*",
       returnHtml(req,res);
     }
   },function(req,res,next){
-    req.params.location =cache.get('lastsearch');
+    req.params.location =req.session.lastsearch;
     if (!req.params.location){
       res.redirect('/');
     } else{
