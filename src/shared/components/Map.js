@@ -3,19 +3,25 @@
 import React from 'react';
 import MapStore from '../stores/MapStore.js';
 import Action from '../actions/BarAction.js';
+import MapMarker from './MapMarker.js';
 
-let Map, TileLayer, Marker,Popup,Tooltip, ZoomControl;
+let Map, TileLayer, ZoomControl;
 
 class Leafletmap extends React.Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state={
           packageloaded:false
         };
+        this.renderMarkers = this.renderMarkers.bind(this);
     }
-   flyTo(){
+    flyTo(){
       var coord= MapStore.getZoom();
       this.mapInstance.leafletElement.flyTo([coord.latitude,coord.longitude], 18);
+    }
+    renderMarkers(marker){
+      return <MapMarker key={marker.id} id={marker.id} coordinates={marker.coordinates} name={marker.name}
+      location={marker.location} phone={marker.phone}/>;
     }
     componentWillMount() {
         MapStore.on("zoom",this.flyTo.bind(this));
@@ -27,9 +33,6 @@ class Leafletmap extends React.Component{
         // Runs only on the browser
         Map = require('react-leaflet').Map;
         TileLayer = require('react-leaflet').TileLayer;
-        Marker = require('react-leaflet').Marker;
-        Popup = require('react-leaflet').Popup;
-        Tooltip = require('react-leaflet').Tooltip;
         ZoomControl = require('react-leaflet').ZoomControl;
         this.setState({packageloaded:true});
     }
@@ -40,27 +43,16 @@ class Leafletmap extends React.Component{
       return (
         this.state.packageloaded
         ? (
-          <Map center={[this.props.lat,this.props.lon]} zoomControl={false} zoom={13} class="map" ref={e => { this.mapInstance = e }}
-          >
-          <TileLayer
-          ref={e => { this.layerInstance = e }}
-            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          <Map center={[this.props.lat,this.props.lon]} zoomControl={false} zoom={13} 
+          style={{height:'90vh',zIndex:1}} ref={e => { this.mapInstance = e }}>
+          <TileLayer attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-            {this.props.markers.map(marker => {
-              return <Marker key={marker.id} position={[marker.coordinates.latitude,marker.coordinates.longitude]} 
-                sytle={{zIndex:5}} onClick={() => Action.scrollTo(marker.id)}>
-                <Popup>
-                  <span><h5>{marker.name}</h5>{marker.location.display_address.join(' ')}<br/>
-                  {marker.phone}</span>
-                </Popup>
-                <Tooltip><span>{marker.name}</span></Tooltip>
-              </Marker>;
-            })}
+            {this.props.markers.map(this.renderMarkers)}
             <ZoomControl position='topright'/>
           </Map>
         )
         : (null)
-        )
+        );
       }
  
 }

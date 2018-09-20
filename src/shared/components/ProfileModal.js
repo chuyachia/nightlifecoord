@@ -13,6 +13,7 @@ class ProfileModal extends React.Component{
             open:false,
             togo:[]
         };
+        this.close = this.close.bind(this);
     }
     componentWillMount() {
         ProfileModalStore.on("openmodal", this.open.bind(this));
@@ -49,7 +50,7 @@ class ProfileModal extends React.Component{
            ariaHideApp={false}
            contentLabel="Review Modal">
           <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}>
-          <i class="fas fa-times" onClick={this.close.bind(this)}/></a>
+          <i class="fas fa-times" onClick={this.close}/></a>
           <h3>Places that you are going to</h3>
            <div class='row'>
            {this.state.togo.length==0&&(<div class='col-md-4'><h4>Nothing to show</h4></div>)}

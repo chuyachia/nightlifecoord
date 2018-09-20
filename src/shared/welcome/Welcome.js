@@ -5,7 +5,23 @@ import {Redirect } from "react-router-dom";
 import WelcomeStore from '../stores/WelcomeStore.js';
 import Searchbar from '../components/Searchbar.js';
 import Footer from '../components/Footer.js';
-import "./Welcome.css";
+import styled from 'styled-components';
+
+
+const Centered= styled.div`
+  width: 80%;
+  height: 60%;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  @media (min-width: 600px) {
+      width: 60%;
+  }
+  
+  @media (min-width: 2200px) {
+      width: 50%;
+  }
+`;
 
 
 
@@ -28,7 +44,7 @@ class Welcome extends React.Component {
     }
     render(){
         return(
-        <div class="center">
+        <Centered>
           <h1>Fancy a drink tonight?</h1>
           <h2>Search for bars in your area and see where everyone else is going</h2>
           <Searchbar nav={false} collapse={null} />
@@ -43,7 +59,7 @@ class Welcome extends React.Component {
               }}/>
             }
             <Footer/>
-        </div>
+        </Centered>
     );
     }
 }

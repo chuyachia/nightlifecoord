@@ -5,7 +5,6 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import cache from 'memory-cache';
 import cors from "cors";
 import React from "react";
 import { renderToString } from "react-dom/server";

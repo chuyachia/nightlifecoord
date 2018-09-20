@@ -2,7 +2,6 @@
 
 import querystring from 'querystring';
 import https from 'https';
-import cache from 'memory-cache';
 
 
 

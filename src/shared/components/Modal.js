@@ -12,6 +12,7 @@ class Modal extends React.Component{
             reviews:[],
             bar:''
         };
+        this.close = this.close.bind(this);
     }
     componentWillMount() {
         ModalStore.on("change", this.showData.bind(this));
@@ -43,7 +44,8 @@ class Modal extends React.Component{
            isOpen={this.state.open}
            ariaHideApp={false}
            contentLabel="Review Modal">
-          <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}><i class="fas fa-times" onClick={this.close.bind(this)}/></a>
+          <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}>
+          <i class="fas fa-times" onClick={this.close}/></a>
            <h3>{this.state.bar}</h3>
            {reviewlist}
         </ReactModal>

@@ -13,21 +13,6 @@ const browserConfig = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: "css-loader",
-              options: { importLoaders: 1 }
-            },
-            {
-              loader: "postcss-loader",
-              options: { plugins: [autoprefixer()] }
-            }
-          ]
-        })
-      },
-      {
         test: /js$/,
         exclude: /(node_modules)/,
         loader: "babel-loader",
@@ -36,9 +21,6 @@ const browserConfig = {
     ]
   },
   plugins:debug?[
-  new ExtractTextPlugin({
-      filename: "public/css/[name].css"
-    }),
     new webpack.BannerPlugin({
       banner: "__isBrowser__ = true;",
       raw: true,
@@ -50,9 +32,6 @@ const browserConfig = {
       }
     })
     ]:[
-    new ExtractTextPlugin({
-      filename: "public/css/[name].css"
-    }),
     new webpack.BannerPlugin({
       banner: "__isBrowser__ = true;",
       raw: true,
@@ -80,14 +59,6 @@ const serverConfig = {
   devtool: debug?"cheap-module-source-map":false,
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: "css-loader/locals"
-          }
-        ]
-      },
       {
         test: /js$/,
         exclude: /(node_modules)/,

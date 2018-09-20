@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import Bar from './Bar.js';
 import BarlistStore from '../stores/BarlistStore.js';
 import orderBy from "lodash.orderby";
+import styled from 'styled-components';
+
+const List= styled.div`
+  position:relative;
+  margin:10px;
+`;
 
 class Barlist extends React.Component{
     constructor(props){
@@ -14,6 +20,9 @@ class Barlist extends React.Component{
             reviewsicon:0
         };
         this.sorticon = [<i class="fas fa-sort"/>,<i class="fas fa-sort-up"/>,<i class="fas fa-sort-down"/>];
+        this.sortByPrice = this.sortByPrice.bind(this);
+        this.sortByReview = this.sortByReview.bind(this);
+        
     }
     componentWillMount() {
         BarlistStore.on("newdata", this.getNewData.bind(this));
@@ -41,6 +50,7 @@ class Barlist extends React.Component{
     getNewData(businesses){
         this.setState({
             businesses:businesses,
+            businessesid:businesses.map(bar=>bar.id),
             priceicon:0,
             reviewsicon:0
         });
@@ -65,45 +75,38 @@ class Barlist extends React.Component{
             });
         }
     }
-
-    changeOrderBy(criteria){
-        switch(criteria){
-            case 'price':{
-                let order = this.state.priceicon%2+1==1?'asc':'desc';
-                let businesses = orderBy(this.state.businesses,function(bar) {
-                    var len = bar.price? bar.price.length:0; 
-                    return len;
-                },order);
-                let businessesid = businesses.map(bar=>bar.id);
-                this.setState({
-                    businesses,
-                    businessesid,
-                    priceicon:this.state.priceicon%2+1,
-                    reviewsicon:0
-                });
-                break;
-            }
-            case 'reviews':{
-               let order = this.state.reviewsicon%2+1==1?'asc':'desc';
-               let businesses = orderBy(this.state.businesses,'review_count',order);
-               let businessesid = businesses.map(bar=>bar.id);
-               this.setState({
-                    businesses,
-                    businessesid,
-                    reviewsicon:this.state.reviewsicon%2+1,
-                    priceicon:0
-                });
-                break;
-            }
-        }
+    sortByPrice(){
+        var order = this.state.priceicon%2+1==1?'asc':'desc';
+        var businesses = orderBy(this.state.businesses,function(bar) {
+            var len = bar.price? bar.price.length:0; 
+            return len;
+        },order);
+        var businessesid = businesses.map(bar=>bar.id);
+        this.setState({
+            businesses,
+            businessesid,
+            priceicon:this.state.priceicon%2+1,
+            reviewsicon:0
+        });        
+    }
+    sortByReview(){
+       var order = this.state.reviewsicon%2+1==1?'asc':'desc';
+       var businesses = orderBy(this.state.businesses,'review_count',order);
+       var businessesid = businesses.map(bar=>bar.id);
+       this.setState({
+            businesses,
+            businessesid,
+            reviewsicon:this.state.reviewsicon%2+1,
+            priceicon:0
+        });        
     }
     render(){
         return(
-        <div ref="container">
+        <List ref="container">
             <h5>Sort by
             <span style={{float:'right'}}>
-            Price <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('price')}}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
-            Number of reviews <span style={{cursor:'pointer'}} onClick={()=> {this.changeOrderBy('reviews')}}>{this.sorticon[this.state.reviewsicon]}</span>
+            Price <span style={{cursor:'pointer'}} onClick={this.sortByPrice}>{this.sorticon[this.state.priceicon]}</span> &nbsp;
+            Number of reviews <span style={{cursor:'pointer'}} onClick={this.sortByReview}>{this.sorticon[this.state.reviewsicon]}</span>
             </span>
             {this.state.businesses.length==0&&(<p>Nothing to show...</p>)}
             {this.state.businesses.map(bar => {
@@ -117,7 +120,7 @@ class Barlist extends React.Component{
                 loggedin = {this.props.loggedin}/>;
             })}
             </h5>
-        </div>);
+        </List>);
             
     }
 }
