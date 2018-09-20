@@ -3,10 +3,11 @@
 import React from 'react';
 import Barlist from '../components/Barlist.js';
 import Leafletmap from '../components/Map.js';
-import Modal from '../components/Modal.js';
+import BarInfoModal from '../components/BarInfoModal.js';
 import ProfileModal from '../components/ProfileModal.js';
 import Navbar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
+import Overlay from '../components/Overlay.js';
 import ResultsStore from '../stores/ResultsStore.js';
 import styled from 'styled-components';
 
@@ -45,27 +46,16 @@ const SideBarButton = styled.div`
     cursor:pointer;
 `;
 
-const Overlay = styled.div`
-    background-color:rgba(204,204,204,0.3);
+
+const Loader = styled.div`
     position:absolute;
-    width:100%;
-    height:100%;
-    top:0px;
-    left:0px;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
     z-index:10;
     display:${props=>props.hide?'none':'inherit'}
-    i {
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform: translate(-50%, -50%);        
-    }
 `;
 
-const ResultList= styled.div`
-  position:relative;
-  margin:10px;
-`;
 class Results extends React.Component{
     constructor(props){
         super(props);
@@ -136,7 +126,7 @@ class Results extends React.Component{
     render(){
         return(
         <div class='container-fluid'>
-            <Modal/>
+            <BarInfoModal/>
             <ProfileModal/>
                 <div class="row">
                     <Navbar loggedin ={this.state.loggedin}/>
@@ -159,7 +149,8 @@ class Results extends React.Component{
                         }
                         </SideBarButton>
                     </SideBar>
-                    <Overlay hide={this.state.loading?false:true}><i class="fas fa-spinner fa-pulse fa-5x"></i></Overlay>
+                    <Overlay hide={this.state.loading?false:true}/>
+                    <Loader hide={this.state.loading?false:true} class="fas fa-spinner fa-pulse fa-5x"/>
                     <Leafletmap lon= {this.state.region.center.longitude} lat= {this.state.region.center.latitude} markers = {this.state.businesses} />
                     <Footer/>
                 </div>

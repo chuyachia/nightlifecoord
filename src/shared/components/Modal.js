@@ -1,55 +1,28 @@
-'use strict';
-
 import React from 'react';
-import ReactModal from 'react-modal';
-import ModalStore from '../stores/ModalStore.js';
+import styled from 'styled-components';
 
-class Modal extends React.Component{
-    constructor(){
-        super();
-        this.state={
-            open:false,
-            reviews:[],
-            bar:''
-        };
-        this.close = this.close.bind(this);
+const ModalDiv = styled.div`
+    border: 1px solid #cccccc;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 1px 1px 4px #888888;
+    position:absolute;
+    width:100%;
+    max-height:85%;
+    overflow-y:scroll;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index:15;
+    display:${props=>props.open?'inherit':'none'}
+    background-color:white;
+    padding: 10px;
+    @media (min-width: 768px) {
+        width:60%;
     }
-    componentWillMount() {
-        ModalStore.on("change", this.showData.bind(this));
-    }
+`;
 
-    componentWillUnmount() {
-        ModalStore.removeListener("change", this.showData.bind(this));
-    }
-    showData(){
-        var storedata = ModalStore.getAll();
-        this.setState({open:true,reviews:storedata.data,bar:storedata.name});
-    }
-    close(){
-        this.setState({open:false});
-    }
-    render(){
-        var modalStyles = {overlay: {zIndex: 10}};
-        var reviewlist =[];
-        if(this.state.reviews.length>0){
-            this.state.reviews.forEach(function(review,indx){
-            reviewlist.push(<blockquote key={indx}><p>{review.text}</p><span><a href={review.url} target='_blank'>Read more</a></span>
-                            <footer>{review.user.name}<cite>{review.time_created}</cite></footer></blockquote>);
-            });
-        } else {
-             reviewlist.push(<p key="0">No review to show...</p>)
-        }
-        return(
-        <ReactModal style={modalStyles}
-           isOpen={this.state.open}
-           ariaHideApp={false}
-           contentLabel="Review Modal">
-          <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}>
-          <i class="fas fa-times" onClick={this.close}/></a>
-           <h3>{this.state.bar}</h3>
-           {reviewlist}
-        </ReactModal>
-        );
-    }
-}
+var Modal = ({open,children})=>(
+    <ModalDiv open={open}>{children}</ModalDiv>
+    );
+    
 export default Modal;

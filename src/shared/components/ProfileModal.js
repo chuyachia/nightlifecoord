@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import ReactModal from 'react-modal';
 import ProfileModalStore from '../stores/ProfileModalStore.js';
 import Action from '../actions/ProfileModalAction.js';
 import Button from './Button.js';
+import Modal from './Modal.js';
+import Overlay from './Overlay.js';
 
 class ProfileModal extends React.Component{
     constructor(){
@@ -45,10 +46,8 @@ class ProfileModal extends React.Component{
     }
     render(){
         return(
-        <ReactModal style={{overlay: {zIndex: 10}}}
-           isOpen={this.state.open}
-           ariaHideApp={false}
-           contentLabel="Review Modal">
+        <div>
+        <Modal open={this.state.open}>
           <a class="leaflet-popup-close-button" style={{float:"right",cursor:"pointer"}}>
           <i class="fas fa-times" onClick={this.close}/></a>
           <h3>Places that you are going to</h3>
@@ -61,7 +60,9 @@ class ProfileModal extends React.Component{
            </div>
            ))}
            </div>
-        </ReactModal>
+        </Modal>
+       <Overlay hide={this.state.open?false:true}/>
+       </div>
         );
     }
 }
