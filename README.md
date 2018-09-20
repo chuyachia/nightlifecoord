@@ -11,5 +11,5 @@ This app uses React server-side rendering and the flux architecture.
 * Routing: React-router-dom
 * Database: MongoDB
 * Authentication: Passport
-* Front-end: React, React-leaflet, React-modal
+* Front-end: React, React-leaflet
 * API: YELP API
